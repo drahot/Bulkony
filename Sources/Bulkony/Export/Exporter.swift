@@ -55,7 +55,7 @@ extension CsvExporter {
     }
 
     private func toCsv(row: [Any]) -> String {
-        "\"\(row.map { normalize(any: $0) }.joined(separator: "\",\""))\""
+        "\(row.map { normalize(any: $0) }.joined(separator: ","))"
     }
 
     private func normalize(any: Any) -> String {
