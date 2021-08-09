@@ -43,7 +43,7 @@ extension CsvExporter {
         }
 
         let newline = "\r\n"
-        let header = "\(toCsv(row: rowGenerator.getHeaders()))\"\(newline)"
+        let header = "\(toCsv(row: rowGenerator.getHeaders()))\(newline)"
         fileHandle.write(header.data(using: .utf8)!)
 
         let rows = rowGenerator.getRows().map {
