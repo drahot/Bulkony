@@ -31,7 +31,6 @@ public struct CsvExporter: Exporter {
 extension CsvExporter {
 
     public func export() throws -> URL {
-
         let fileHandle = try FileHandle(forWritingTo: filePath)
 
         defer {
