@@ -1,11 +1,11 @@
-    import XCTest
-    @testable import Bulkony
+@testable import Bulkony
+import XCTest
 
-    final class BulkonyTests: XCTestCase {
-        func testExample() {
-            // This is an example of a functional test case.
-            // Use XCTAssert and related functions to verify your tests produce the correct
-            // results.
-            XCTAssertEqual(Bulkony().text, "Hello, World!")
-        }
+final class BulkonyTests: XCTestCase {
+    func testExample() {
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct
+        // results.
+        XCTAssertEqual(Bulkony().text, "Hello, World!")
     }
+}

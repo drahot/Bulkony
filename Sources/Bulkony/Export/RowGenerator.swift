@@ -4,8 +4,7 @@
 
 import Foundation
 
-public protocol RowGenerator  {
+public protocol RowGenerator {
     func getHeaders() -> [String]
     func getRows() -> AnySequence<[Any]>
 }
-

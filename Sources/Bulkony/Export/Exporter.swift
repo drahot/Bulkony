@@ -7,12 +7,13 @@ import Foundation
 public protocol Exporter {
     var filePath: URL { get }
     var rowGenerator: RowGenerator { get }
-    func export() throws -> URL
-
+    func export() throws
 }
 
+@available(macCatalyst 13.0, *)
 public struct CsvExporter: Exporter {
 
+    private let NEW_LINE = "\r\n"
     public private(set) var filePath: URL
     public private(set) var rowGenerator: RowGenerator
 
@@ -28,11 +29,11 @@ public struct CsvExporter: Exporter {
 
 }
 
+@available(macCatalyst 13.0, *)
 extension CsvExporter {
 
-    public func export() throws -> URL {
+    public func export() throws {
         let fileHandle = try FileHandle(forWritingTo: filePath)
-
         defer {
             if #available(macOS 10.15, *) {
                 do {
@@ -42,54 +43,55 @@ extension CsvExporter {
             }
         }
 
-        let newline = "\r\n"
-        let header = "\(toCsv(row: rowGenerator.getHeaders()))\(newline)"
-        fileHandle.write(header.data(using: .utf8)!)
+        func write(_ str: String) {
+            if let data = str.data(using: .utf8) {
+                fileHandle.write(data)
+            }
+        }
 
-        let rows = rowGenerator.getRows().map {
+        let headers = rowGenerator.getHeaders()
+        if !headers.isEmpty {
+            let header = toCsv(row: headers) + NEW_LINE
+            write(header)
+        }
+
+        let body = rowGenerator.getRows().map {
             toCsv(row: $0)
-        }.joined(separator: newline)
-        fileHandle.write(rows.data(using: .utf8)!)
+        }.joined(separator: NEW_LINE)
 
-        return filePath
+        if !body.isEmpty {
+            write(body)
+        }
     }
 
     private func toCsv(row: [Any]) -> String {
-        "\(row.map { normalize(any: $0) }.joined(separator: ","))"
+        row.map {
+            normalize(any: $0)
+        }.joined(separator: ",")
     }
 
     private func normalize(any: Any) -> String {
-        switch (true) {
-        case any is String:
-            var encloseDoubleQuote = false
-            var existsCR = false
+        if any is String {
+            var enclosedInDoubleQuote = false
             var result = ""
-            let data = any as! String
-            data.forEach { c in
-                switch (c) {
+            (any as! String).forEach { c in
+                switch c {
                 case "\"":
                     result.append("\"")
-                    encloseDoubleQuote = true
-                case ",":
-                    encloseDoubleQuote = true
-                case "\r":
-                    existsCR = true
-                case "\n":
-                    if existsCR {
-                        existsCR = false
-                        encloseDoubleQuote = true
-                    }
+                    enclosedInDoubleQuote = true
+                case ",", "\r", "\n":
+                    enclosedInDoubleQuote = true
                 default:
                     break
                 }
                 result.append(c)
             }
-            if encloseDoubleQuote {
+            if enclosedInDoubleQuote {
                 result.insert("\"", at: result.startIndex)
                 result.append("\"")
             }
             return result
-        default:
+        } else {
             return any as! String
         }
     }
