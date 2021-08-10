@@ -72,23 +72,22 @@ extension CsvExporter {
 
     private func normalize(any: Any) -> String {
         if any is String {
-            var enclosedInDoubleQuote = false
-            var result = ""
-            (any as! String).forEach { c in
+            let tuple = (any as! String).map { c -> (String, Bool) in
                 switch c {
                 case "\"":
-                    result.append("\"")
-                    enclosedInDoubleQuote = true
+                    return (String(c) + "\"", true)
                 case ",", "\r", "\n":
-                    enclosedInDoubleQuote = true
+                    return (String(c), true)
                 default:
-                    break
+                    return (String(c), false)
                 }
-                result.append(c)
             }
+            let (result, enclosedInDoubleQuote) = tuple.reduce(("", false)) {
+                prev, current -> (String, Bool) in (prev.0 + current.0, prev.1 || current.1)
+            }
+
             if enclosedInDoubleQuote {
-                result.insert("\"", at: result.startIndex)
-                result.append("\"")
+                return "\"\(result)\""
             }
             return result
         } else {
