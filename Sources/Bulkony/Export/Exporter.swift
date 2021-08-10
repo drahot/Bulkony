@@ -82,6 +82,7 @@ extension CsvExporter {
                     return (String(c), false)
                 }
             }
+
             let (result, enclosedInDoubleQuote) = tuple.reduce(("", false)) {
                 prev, current -> (String, Bool) in (prev.0 + current.0, prev.1 || current.1)
             }
