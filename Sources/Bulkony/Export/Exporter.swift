@@ -43,12 +43,13 @@ extension CsvExporter {
             }
         }
 
-        func write(_ str: String) {
-            if let data = str.data(using: .utf8) {
+        func write(_ str: String, using encoding: String.Encoding = .utf8) {
+            if let data = str.data(using: encoding) {
                 fileHandle.write(data)
             }
         }
 
+        write("\u{FEFF}")
         let headers = rowGenerator.getHeaders()
         if !headers.isEmpty {
             let header = toCsv(row: headers) + NEW_LINE
@@ -72,7 +73,7 @@ extension CsvExporter {
 
     private func normalize(any: Any) -> String {
         if any is String {
-            let tuple = (any as! String).map { c -> (String, Bool) in
+            let tuples = (any as! String).map { c -> (String, Bool) in
                 switch c {
                 case "\"":
                     return (String(c) + "\"", true)
@@ -83,8 +84,8 @@ extension CsvExporter {
                 }
             }
 
-            let (result, enclosedInDoubleQuote) = tuple.reduce(("", false)) {
-                prev, current -> (String, Bool) in (prev.0 + current.0, prev.1 || current.1)
+            let (result, enclosedInDoubleQuote) = tuples.reduce(("", false)) { prev, current -> (String, Bool) in
+                (prev.0 + current.0, prev.1 || current.1)
             }
 
             if enclosedInDoubleQuote {
