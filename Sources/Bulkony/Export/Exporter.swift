@@ -33,7 +33,7 @@ public struct CsvExporter: Exporter {
 extension CsvExporter {
 
     public func export() throws {
-        FileManager.default.createFile(atPath: filePath.absoluteString, contents: nil, attributes: nil)
+        FileManager.default.createFile(atPath: filePath.path, contents: nil, attributes: nil)
         let fileHandle = try FileHandle(forWritingTo: filePath)
         defer {
             if #available(macOS 10.15, *) {
