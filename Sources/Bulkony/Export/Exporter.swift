@@ -78,7 +78,7 @@ extension CsvExporter {
                 switch c {
                 case "\"":
                     return (String(c) + "\"", true)
-                case ",", "\r", "\n":
+                case ",", "\r\n", "\n":
                     return (String(c), true)
                 default:
                     return (String(c), false)
@@ -94,7 +94,7 @@ extension CsvExporter {
             }
             return result
         } else {
-            return any as! String
+            return String(describing: any)
         }
     }
 
