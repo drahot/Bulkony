@@ -63,11 +63,11 @@ extension CsvExporter {
     }
 
     private func normalize(any: Any) -> String {
-        guard any is String else {
+        guard let str = any as? String else {
             return String(describing: any)
         }
 
-        let (result, enclosedInDoubleQuote) = (any as! String).map { c -> (String, Bool) in
+        let (result, enclosedInDoubleQuote) = str.map { c -> (String, Bool) in
             switch c {
             case "\"":
                 return (String(c) + "\"", true)
