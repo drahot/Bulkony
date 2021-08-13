@@ -33,6 +33,12 @@ public struct CsvExporter: Exporter {
 extension CsvExporter {
 
     public func export() throws {
+        func toCsv(row: [Any]) -> String {
+            row.map {
+                normalize(any: $0)
+            }.joined(separator: ",")
+        }
+
         func getHeader() -> String {
             let headers = rowGenerator.getHeaders()
             if headers.isEmpty {
@@ -56,36 +62,25 @@ extension CsvExporter {
         )
     }
 
-    private func toCsv(row: [Any]) -> String {
-        row.map {
-            normalize(any: $0)
-        }.joined(separator: ",")
-    }
-
     private func normalize(any: Any) -> String {
-        if any is String {
-            let tuples = (any as! String).map { c -> (String, Bool) in
-                switch c {
-                case "\"":
-                    return (String(c) + "\"", true)
-                case ",", "\r\n", "\n":
-                    return (String(c), true)
-                default:
-                    return (String(c), false)
-                }
-            }
-
-            let (result, enclosedInDoubleQuote) = tuples.reduce(("", false)) { prev, current -> (String, Bool) in
-                (prev.0 + current.0, prev.1 || current.1)
-            }
-
-            if enclosedInDoubleQuote {
-                return "\"\(result)\""
-            }
-            return result
-        } else {
+        guard any is String else {
             return String(describing: any)
         }
+
+        let (result, enclosedInDoubleQuote) = (any as! String).map { c -> (String, Bool) in
+            switch c {
+            case "\"":
+                return (String(c) + "\"", true)
+            case ",", "\r\n", "\n":
+                return (String(c), true)
+            default:
+                return (String(c), false)
+            }
+        }.reduce(("", false)) { current, next -> (String, Bool) in
+            (current.0 + next.0, current.1 || next.1)
+        }
+
+        return enclosedInDoubleQuote ? "\"\(result)\"" : result
     }
 
 }
