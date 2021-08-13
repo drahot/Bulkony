@@ -33,37 +33,27 @@ public struct CsvExporter: Exporter {
 extension CsvExporter {
 
     public func export() throws {
-        FileManager.default.createFile(atPath: filePath.path, contents: nil, attributes: nil)
-        let fileHandle = try FileHandle(forWritingTo: filePath)
-        defer {
-            if #available(macOS 10.15, *) {
-                do {
-                    try fileHandle.close()
-                } catch {
-                }
+        func getHeader() -> String {
+            let headers = rowGenerator.getHeaders()
+            if headers.isEmpty {
+                return ""
             }
+            return toCsv(row: headers) + NEW_LINE
         }
 
-        func write(_ str: String, using encoding: String.Encoding = .utf8) {
-            if let data = str.data(using: encoding) {
-                fileHandle.write(data)
-            }
+        func getBody() -> String {
+            rowGenerator.getRows().map {
+                toCsv(row: $0)
+            }.joined(separator: NEW_LINE)
         }
 
-        write("\u{FEFF}")
-        let headers = rowGenerator.getHeaders()
-        if !headers.isEmpty {
-            let header = toCsv(row: headers) + NEW_LINE
-            write(header)
-        }
-
-        let body = rowGenerator.getRows().map {
-            toCsv(row: $0)
-        }.joined(separator: NEW_LINE)
-
-        if !body.isEmpty {
-            write(body)
-        }
+        let bom = "\u{FEFF}"
+        let data = bom + getHeader() + getBody()
+        FileManager.default.createFile(
+                atPath: filePath.path,
+                contents: data.data(using: .utf8),
+                attributes: nil
+        )
     }
 
     private func toCsv(row: [Any]) -> String {
@@ -96,6 +86,6 @@ extension CsvExporter {
         } else {
             return String(describing: any)
         }
-    }
+        }
 
 }
