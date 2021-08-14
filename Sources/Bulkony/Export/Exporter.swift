@@ -10,7 +10,6 @@ public protocol Exporter {
     func export() throws
 }
 
-@available(macCatalyst 13.0, *)
 public struct CsvExporter: Exporter {
 
     private let NEW_LINE = "\r\n"
@@ -29,58 +28,65 @@ public struct CsvExporter: Exporter {
 
 }
 
-@available(macCatalyst 13.0, *)
 extension CsvExporter {
-
     public func export() throws {
-        func toCsv(row: [Any]) -> String {
-            row.map {
-                normalize(any: $0)
-            }.joined(separator: ",")
-        }
+        _export(filePath, rowGenerator, ",", NEW_LINE, true)
+    }
+}
 
-        func getHeader() -> String {
-            let headers = rowGenerator.getHeaders()
-            if headers.isEmpty {
-                return ""
-            }
-            return toCsv(row: headers) + NEW_LINE
-        }
+fileprivate func _export(
+        _ filePath: URL,
+        _ rowGenerator: RowGenerator,
+        _ separator: Character,
+        _ newLine: String,
+        _ withBOM: Bool = false) {
 
-        func getBody() -> String {
-            rowGenerator.getRows().map {
-                toCsv(row: $0)
-            }.joined(separator: NEW_LINE)
-        }
-
-        let bom = "\u{FEFF}"
-        let data = bom + getHeader() + getBody()
-        FileManager.default.createFile(
-                atPath: filePath.path,
-                contents: data.data(using: .utf8),
-                attributes: nil
-        )
+    func toData(row: [Any]) -> String {
+        row.map {
+            _normalize(any: $0, separator: separator)
+        }.joined(separator: String(separator))
     }
 
-    private func normalize(any: Any) -> String {
-        guard let str = any as? String else {
-            return String(describing: any)
+    func getHeader() -> String {
+        let headers = rowGenerator.getHeaders()
+        if headers.isEmpty {
+            return ""
         }
-
-        let (result, enclosedInDoubleQuote) = str.map { c -> (String, Bool) in
-            switch c {
-            case "\"":
-                return (String(c) + "\"", true)
-            case ",", "\r\n", "\n":
-                return (String(c), true)
-            default:
-                return (String(c), false)
-            }
-        }.reduce(("", false)) { current, next -> (String, Bool) in
-            (current.0 + next.0, current.1 || next.1)
-        }
-
-        return enclosedInDoubleQuote ? "\"\(result)\"" : result
+        return toData(row: headers) + newLine
     }
 
+    func getBody() -> String {
+        rowGenerator.getRows().map {
+            toData(row: $0)
+        }.joined(separator: newLine)
+    }
+
+    let bom = withBOM ? "\u{FEFF}" : ""
+    let data = bom + getHeader() + getBody()
+    FileManager.default.createFile(
+            atPath: filePath.path,
+            contents: data.data(using: .utf8),
+            attributes: nil
+    )
+}
+
+fileprivate func _normalize(any: Any, separator: Character) -> String {
+    guard let str = any as? String else {
+        return String(describing: any)
+    }
+
+    let (result, enclosedInDoubleQuote) = str.map { c -> (String, Bool) in
+        switch c {
+        case "\"":
+            return (String(c) + "\"", true)
+        case separator, "\r\n", "\n":
+            return (String(c), true)
+        default:
+            return (String(c), false)
+        }
+    }.reduce(("", false)) { current, next -> (String, Bool) in
+        (current.0 + next.0, current.1 || next.1)
+    }
+
+    return enclosedInDoubleQuote ? "\"\(result)\"" : result
 }
