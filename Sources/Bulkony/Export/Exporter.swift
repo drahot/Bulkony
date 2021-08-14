@@ -49,10 +49,7 @@ private func _export(
 
     func getHeader() -> String {
         let headers = rowGenerator.getHeaders()
-        if headers.isEmpty {
-            return ""
-        }
-        return toData(row: headers) + newLine
+        return headers.isEmpty ? "" : toData(row: headers) + newLine
     }
 
     func getBody() -> String {
