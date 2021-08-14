@@ -12,6 +12,7 @@ final class ExporterTests: XCTestCase {
         try exporter.export()
         let fileHandle = FileHandle(forReadingAtPath: "/tmp/test.csv")
         let data = fileHandle?.readDataToEndOfFile()
+        try fileHandle?.close()
         XCTAssertNotEqual(nil, data)
         let result = "\u{FEFF}id,name,birthday\r\n1,\"\"\"Tatsuya Hotta\",1974/03/15\r\n2,\"Riho, Yoshioka\",1993/01/15\r\n3,\"Kana\r\nKurashina\",1987/12/23"
         print(String(data: data!, encoding: .utf8)!)
