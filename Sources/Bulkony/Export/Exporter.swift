@@ -34,7 +34,7 @@ extension CsvExporter {
     }
 }
 
-fileprivate func _export(
+private func _export(
         _ filePath: URL,
         _ rowGenerator: RowGenerator,
         _ separator: Character,
@@ -70,7 +70,7 @@ fileprivate func _export(
     )
 }
 
-fileprivate func _normalize(any: Any, separator: Character) -> String {
+private func _normalize(any: Any, separator: Character) -> String {
     guard let str = any as? String else {
         return String(describing: any)
     }
