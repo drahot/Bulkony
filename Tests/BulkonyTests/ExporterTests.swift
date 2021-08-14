@@ -16,6 +16,7 @@ final class ExporterTests: XCTestCase {
         let result = "\u{FEFF}id,name,birthday\r\n1,\"\"\"Tatsuya Hotta\",1974/03/15\r\n2,\"Riho, Yoshioka\",1993/01/15\r\n3,\"Kana\r\nKurashina\",1987/12/23"
         print(String(data: data!, encoding: .utf8)!)
         XCTAssertEqual(result, String(data: data!, encoding: .utf8)!)
+        try FileManager.default.removeItem(atPath: "/tmp/test.csv")
     }
 }
 
