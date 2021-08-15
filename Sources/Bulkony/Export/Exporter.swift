@@ -13,6 +13,7 @@ public protocol Exporter {
 public struct CsvExporter: Exporter {
 
     private let NEW_LINE = "\r\n"
+    private let SEPARATOR: Character = ","
     public private(set) var filePath: URL
     public private(set) var rowGenerator: RowGenerator
 
@@ -30,7 +31,31 @@ public struct CsvExporter: Exporter {
 
 extension CsvExporter {
     public func export() throws {
-        _export(filePath, rowGenerator, ",", NEW_LINE, true)
+        _export(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
+    }
+}
+
+public struct TsvExporter: Exporter {
+
+    private let NEW_LINE = "\n"
+    private let SEPARATOR: Character = "\t"
+    public private(set) var filePath: URL
+    public private(set) var rowGenerator: RowGenerator
+
+    init(_ filePath: String, _ rowGenerator: RowGenerator) {
+        let url = URL(fileURLWithPath: filePath)
+        self.init(url, rowGenerator)
+    }
+
+    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
+        self.filePath = filePath
+        self.rowGenerator = rowGenerator
+    }
+}
+
+extension TsvExporter {
+    public func export() throws {
+        _export(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
     }
 }
 
