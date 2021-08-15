@@ -55,7 +55,7 @@ public struct TsvExporter: Exporter {
 
 extension TsvExporter {
     public func export() throws {
-        _export(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
+        _export(filePath, rowGenerator, SEPARATOR, NEW_LINE)
     }
 }
 
