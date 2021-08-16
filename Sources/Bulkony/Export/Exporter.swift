@@ -51,6 +51,7 @@ public struct TsvExporter: Exporter {
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
+
 }
 
 extension TsvExporter {
