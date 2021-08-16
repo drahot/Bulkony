@@ -68,7 +68,7 @@ private func _export(
 
     func toData(row: [Any]) -> String {
         row.map {
-            _normalize(any: $0, separator: separator)
+            _normalize($0, separator)
         }.joined(separator: String(separator))
     }
 
@@ -92,7 +92,7 @@ private func _export(
     )
 }
 
-private func _normalize(any: Any, separator: Character) -> String {
+private func _normalize(_ any: Any, _ separator: Character) -> String {
     guard let str = any as? String else {
         return String(describing: any)
     }
