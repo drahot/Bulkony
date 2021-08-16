@@ -31,7 +31,7 @@ public struct CsvExporter: Exporter {
 
 extension CsvExporter {
     public func export() throws {
-        _export(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
+        _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
     }
 }
 
@@ -55,11 +55,11 @@ public struct TsvExporter: Exporter {
 
 extension TsvExporter {
     public func export() throws {
-        _export(filePath, rowGenerator, SEPARATOR, NEW_LINE)
+        _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE)
     }
 }
 
-private func _export(
+private func _exportCsv(
         _ filePath: URL,
         _ rowGenerator: RowGenerator,
         _ separator: Character,
@@ -68,7 +68,7 @@ private func _export(
 
     func toData(row: [Any]) -> String {
         row.map {
-            _normalize($0, separator)
+            _normalizeCsv($0, separator)
         }.joined(separator: String(separator))
     }
 
@@ -92,7 +92,7 @@ private func _export(
     )
 }
 
-private func _normalize(_ any: Any, _ separator: Character) -> String {
+private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
     guard let str = any as? String else {
         return String(describing: any)
     }
