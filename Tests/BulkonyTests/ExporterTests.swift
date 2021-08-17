@@ -8,7 +8,7 @@ import XCTest
 
 final class ExporterTests: XCTestCase {
     func testsCsvExporter() throws {
-        let exporter = CsvExporter("/tmp/test.csv", ArrayRowGenerator())
+        let exporter = CsvExporter("/tmp/test.csv", ArrayRowGenerator(headers: getHeaders(), rows: getRows()))
         try exporter.export()
         let fileHandle = FileHandle(forReadingAtPath: "/tmp/test.csv")
         let data = fileHandle?.readDataToEndOfFile()
@@ -20,7 +20,7 @@ final class ExporterTests: XCTestCase {
     }
     
     func testsTsvExporter() throws {
-        let exporter = TsvExporter("/tmp/test.tsv", ArrayRowGenerator())
+        let exporter = TsvExporter("/tmp/test.tsv", ArrayRowGenerator(headers: getHeaders(), rows: getRows()))
         try exporter.export()
         let fileHandle = FileHandle(forReadingAtPath: "/tmp/test.tsv")
         let data = fileHandle?.readDataToEndOfFile()
@@ -31,10 +31,11 @@ final class ExporterTests: XCTestCase {
         try FileManager.default.removeItem(atPath: "/tmp/test.tsv")
     }
 
-}
+    private func getHeaders() -> [String] {
+        ["id", "name", "birthday"]
+    }
 
-private struct ArrayRowGenerator: RowGenerator {
-    func getRows() -> AnySequence<[Any]> {
+    private func getRows() -> AnySequence<[Any]> {
         let formatter = DateFormatter()
         formatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yyyy/MM/dd", options: 0, locale: Locale(identifier: "ja_JP"))
         let data = [
@@ -45,8 +46,5 @@ private struct ArrayRowGenerator: RowGenerator {
         ]
         return AnySequence(data)
     }
-
-    func getHeaders() -> [String] {
-        ["id", "name", "birthday"]
-    }
 }
+

@@ -8,3 +8,21 @@ public protocol RowGenerator {
     func getHeaders() -> [String]
     func getRows() -> AnySequence<[Any]>
 }
+
+public struct ArrayRowGenerator: RowGenerator {
+    private var headers: [String]
+    private var rows: AnySequence<[Any]>
+    init(headers: [String], rows: AnySequence<[Any]>) {
+        self.headers = headers
+        self.rows = rows
+    }
+}
+
+extension ArrayRowGenerator {
+    public func getHeaders() -> [String] {
+        headers
+    }
+    public func getRows() -> AnySequence<[Any]> {
+        AnySequence(rows)
+    }
+}
