@@ -3,6 +3,7 @@
 //
 
 import Foundation
+import CoreFoundation
 
 public protocol Exporter {
     var filePath: URL { get }
@@ -31,7 +32,7 @@ public struct CsvExporter: Exporter {
 
 extension CsvExporter {
     public func export() throws {
-        _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
+        try _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
     }
 }
 
@@ -56,21 +57,23 @@ public struct TsvExporter: Exporter {
 
 extension TsvExporter {
     public func export() throws {
-        _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE)
+        try _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE)
     }
 }
 
 public struct XmlExporter: Exporter {
 
+    public private(set) var rootElement: String
     public private(set) var filePath: URL
     public private(set) var rowGenerator: RowGenerator
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator) {
+    init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootElement: String) {
         let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator)
+        self.init(url, rowGenerator, rootElement)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
+    init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootElement: String) {
+        self.rootElement = rootElement
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
@@ -80,6 +83,12 @@ public struct XmlExporter: Exporter {
 extension XmlExporter {
 
     public func export() throws {
+        let root = XMLElement(name: rootElement)
+        let xml = XMLDocument(rootElement: root)
+        let headers = rowGenerator.getHeaders()
+        guard !headers.isEmpty else {
+            throw NSError(domain: "headers is empty", code: -1, userInfo: nil)
+        }
 
     }
 
@@ -90,7 +99,9 @@ private func _exportCsv(
         _ rowGenerator: RowGenerator,
         _ separator: Character,
         _ newLine: String,
-        _ withBOM: Bool = false) {
+        _ withBOM: Bool = false) throws {
+
+    let headers = rowGenerator.getHeaders()
 
     func toData(row: [Any]) -> String {
         row.map {
@@ -99,18 +110,25 @@ private func _exportCsv(
     }
 
     func getHeader() -> String {
-        let headers = rowGenerator.getHeaders()
-        return headers.isEmpty ? "" : toData(row: headers) + newLine
+        headers.isEmpty ? "" : toData(row: headers) + newLine
     }
 
-    func getBody() -> String {
-        rowGenerator.getRows().map {
-            toData(row: $0)
+    func getBody() throws -> String {
+        try rowGenerator.getRows().map { row in
+            let count = row.count - headers.count
+            guard count >= 0 else {
+                throw NSError(domain: "header count does not match rows", code: -3, userInfo: nil)
+            }
+            let data = row.dropLast(count).map {
+                $0
+            }
+            return toData(row: data)
         }.joined(separator: newLine)
     }
 
     let bom = withBOM ? "\u{FEFF}" : ""
-    let data = bom + getHeader() + getBody()
+    let body = try getBody()
+    let data = bom + getHeader() + body
     FileManager.default.createFile(
             atPath: filePath.path,
             contents: data.data(using: .utf8),
