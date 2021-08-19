@@ -60,6 +60,31 @@ extension TsvExporter {
     }
 }
 
+public struct XmlExporter: Exporter {
+
+    public private(set) var filePath: URL
+    public private(set) var rowGenerator: RowGenerator
+
+    init(_ filePath: String, _ rowGenerator: RowGenerator) {
+        let url = URL(fileURLWithPath: filePath)
+        self.init(url, rowGenerator)
+    }
+
+    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
+        self.filePath = filePath
+        self.rowGenerator = rowGenerator
+    }
+
+}
+
+extension XmlExporter {
+
+    public func export() throws {
+
+    }
+
+}
+
 private func _exportCsv(
         _ filePath: URL,
         _ rowGenerator: RowGenerator,
