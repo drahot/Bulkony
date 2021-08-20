@@ -93,10 +93,10 @@ extension XmlExporter {
         guard !headers.isEmpty else {
             throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
         }
-        rowGenerator.getRows().forEach { data in
+        try rowGenerator.getRows().forEach { data in
             let row = XMLElement(name: rowElement)
             root.addChild(row)
-            data.enumerated().forEach { offset, element in
+            try _adjustData(headers, data).enumerated().forEach { offset, element in
                 let attribute = XMLNode(kind: .attribute)
                 attribute.name = headers[offset]
                 attribute.objectValue = element
