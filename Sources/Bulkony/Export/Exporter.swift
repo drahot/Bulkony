@@ -3,7 +3,6 @@
 //
 
 import Foundation
-import CoreFoundation
 
 public protocol Exporter {
     var filePath: URL { get }
@@ -63,17 +62,21 @@ extension TsvExporter {
 
 public struct XmlExporter: Exporter {
 
-    public private(set) var rootElement: String
     public private(set) var filePath: URL
     public private(set) var rowGenerator: RowGenerator
+    public private(set) var rootElement: String
+    public private(set) var rowElement: String
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootElement: String) {
+    init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootElement: String = "root",
+         _ rowElement: String = "row") {
         let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator, rootElement)
+        self.init(url, rowGenerator, rootElement, rowElement)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootElement: String) {
+    init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootElement: String = "root",
+         _ rowElement: String = "row") {
         self.rootElement = rootElement
+        self.rowElement = rowElement
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
@@ -85,11 +88,29 @@ extension XmlExporter {
     public func export() throws {
         let root = XMLElement(name: rootElement)
         let xml = XMLDocument(rootElement: root)
+        xml.characterEncoding = "UTF-8"
         let headers = rowGenerator.getHeaders()
         guard !headers.isEmpty else {
-            throw NSError(domain: "headers is empty", code: -1, userInfo: nil)
+            throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
         }
-
+        rowGenerator.getRows().forEach { data in
+            let row = XMLElement(name: rowElement)
+            root.addChild(row)
+            data.enumerated().forEach { offset, element in
+                let attribute = XMLNode(kind: .attribute)
+                attribute.name = headers[offset]
+                attribute.objectValue = element
+                row.addAttribute(attribute)
+            }
+        }
+        guard let xmlString = xml.stringValue else {
+            throw NSError(domain: "does not convert xml", code: -3, userInfo: nil)
+        }
+        FileManager.default.createFile(
+                atPath: filePath.path,
+                contents: xmlString.data(using: .utf8),
+                attributes: nil
+        )
     }
 
 }
@@ -115,13 +136,7 @@ private func _exportCsv(
 
     func getBody() throws -> String {
         try rowGenerator.getRows().map { row in
-            let count = row.count - headers.count
-            guard count >= 0 else {
-                throw NSError(domain: "header count does not match rows", code: -3, userInfo: nil)
-            }
-            let data = row.dropLast(count).map {
-                $0
-            }
+            let data = try _adjustData(headers, row)
             return toData(row: data)
         }.joined(separator: newLine)
     }
@@ -155,4 +170,14 @@ private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
     }
 
     return enclosedInDoubleQuote ? "\"\(result)\"" : result
+}
+
+private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {
+    let count = data.count - headers.count
+    guard count >= 0 else {
+        throw NSError(domain: "header count does not match rows", code: -1, userInfo: nil)
+    }
+    return data.dropLast(count).map {
+        $0
+    }
 }
