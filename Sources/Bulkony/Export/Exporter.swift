@@ -103,13 +103,17 @@ extension XmlExporter {
                 row.addAttribute(attribute)
             }
         }
-        FileManager.default.createFile(
-                atPath: filePath.path,
-                contents: xml.xmlString.data(using: .utf8),
-                attributes: nil
-        )
+        _createFile(filePath.path, xml.xmlString.data(using: .utf8))
     }
 
+}
+
+private func _createFile(_ path: String, _ data: Data?) {
+    FileManager.default.createFile(
+            atPath: path,
+            contents: data,
+            attributes: nil
+    )
 }
 
 private func _exportCsv(
@@ -141,11 +145,7 @@ private func _exportCsv(
     let bom = withBOM ? "\u{FEFF}" : ""
     let body = try getBody()
     let data = bom + getHeader() + body
-    FileManager.default.createFile(
-            atPath: filePath.path,
-            contents: data.data(using: .utf8),
-            attributes: nil
-    )
+    _createFile(filePath.path, data.data(using: .utf8))
 }
 
 private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
