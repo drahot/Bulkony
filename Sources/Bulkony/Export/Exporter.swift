@@ -96,19 +96,16 @@ extension XmlExporter {
         try rowGenerator.getRows().forEach { data in
             let row = XMLElement(name: rowElement)
             root.addChild(row)
-            try _adjustData(headers, data).enumerated().forEach { offset, element in
+            try _adjustData(headers, data).enumerated().forEach { offset, value in
                 let attribute = XMLNode(kind: .attribute)
                 attribute.name = headers[offset]
-                attribute.objectValue = element
+                attribute.stringValue = String(describing: value)
                 row.addAttribute(attribute)
             }
         }
-        guard let xmlString = xml.stringValue else {
-            throw NSError(domain: "does not convert xml", code: -3, userInfo: nil)
-        }
         FileManager.default.createFile(
                 atPath: filePath.path,
-                contents: xmlString.data(using: .utf8),
+                contents: xml.xmlString.data(using: .utf8),
                 attributes: nil
         )
     }

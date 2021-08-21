@@ -31,6 +31,18 @@ final class ExporterTests: XCTestCase {
         try FileManager.default.removeItem(atPath: "/tmp/test.tsv")
     }
 
+    func testsExporter() throws {
+        let exporter = XmlExporter("/tmp/test.xml", ArrayRowGenerator(headers: getHeaders(), rows: getRows()))
+        try exporter.export()
+        let fileHandle = FileHandle(forReadingAtPath: "/tmp/test.xml")
+        let data = fileHandle?.readDataToEndOfFile()
+        try fileHandle?.close()
+        XCTAssertNotEqual(nil, data)
+        let result = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><root><row id=\"1\" name=\"&quot;Tatsuya Hotta\" birthday=\"1974/03/15\"></row><row id=\"2\" name=\"Riho, Yoshioka\" birthday=\"1993/01/15\"></row><row id=\"3\" name=\"Kana\r\nKurashina\" birthday=\"1987/12/23\"></row><row id=\"4\" name=\"Kanna Hashimoto\" birthday=\"1999/02/03\"></row></root>"
+        XCTAssertEqual(result, String(data: data!, encoding: .utf8)!)
+//        try FileManager.default.removeItem(atPath: "/tmp/test.xml")
+    }
+
     private func getHeaders() -> [String] {
         ["id", "name", "birthday"]
     }
