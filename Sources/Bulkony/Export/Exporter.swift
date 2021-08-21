@@ -84,7 +84,6 @@ public struct XmlExporter: Exporter {
 }
 
 extension XmlExporter {
-
     public func export() throws {
         let root = XMLElement(name: rootElement)
         let xml = XMLDocument(rootElement: root)
@@ -105,7 +104,6 @@ extension XmlExporter {
         }
         _createFile(filePath.path, xml.xmlString.data(using: .utf8))
     }
-
 }
 
 private func _createFile(_ path: String, _ data: Data?) {
