@@ -171,7 +171,7 @@ private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
 
 private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {
     let count = data.count - headers.count
-    guard count >= 0 else {
+    if count < 0 {
         throw NSError(domain: "header count does not match rows", code: -1, userInfo: nil)
     }
     return data.dropLast(count).map {
