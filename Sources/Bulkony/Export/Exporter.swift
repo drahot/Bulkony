@@ -64,19 +64,19 @@ public struct XmlExporter: Exporter {
 
     public private(set) var filePath: URL
     public private(set) var rowGenerator: RowGenerator
-    public private(set) var rootElement: String
-    public private(set) var rowElement: String
+    public private(set) var rootName: String
+    public private(set) var rowName: String
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootElement: String = "root",
-         _ rowElement: String = "row") {
+    init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootName: String = "root",
+         _ rowName: String = "row") {
         let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator, rootElement, rowElement)
+        self.init(url, rowGenerator, rootName, rowName)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootElement: String = "root",
-         _ rowElement: String = "row") {
-        self.rootElement = rootElement
-        self.rowElement = rowElement
+    init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootName: String = "root",
+         _ rowName: String = "row") {
+        self.rootName = rootName
+        self.rowName = rowName
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
@@ -85,7 +85,7 @@ public struct XmlExporter: Exporter {
 
 extension XmlExporter {
     public func export() throws {
-        let root = XMLElement(name: rootElement)
+        let root = XMLElement(name: rootName)
         let xml = XMLDocument(rootElement: root)
         xml.characterEncoding = "UTF-8"
         let headers = rowGenerator.getHeaders()
@@ -93,7 +93,7 @@ extension XmlExporter {
             throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
         }
         try rowGenerator.getRows().forEach { data in
-            let row = XMLElement(name: rowElement)
+            let row = XMLElement(name: rowName)
             root.addChild(row)
             try _adjustData(headers, data).enumerated().forEach { offset, value in
                 let attribute = XMLNode(kind: .attribute)
