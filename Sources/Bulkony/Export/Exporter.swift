@@ -130,10 +130,10 @@ extension JsonExporter {
             throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
         }
         let jsonData: [Dictionary<String, Any>] = try rowGenerator.getRows().map { data in
-            try _adjustData(headers, data).enumerated().map { offset, value in
-                let name = headers[offset]
-                return [name: value]
+            let pairs: [(String, Any)] = try _adjustData(headers, data).enumerated().map { offset, value in
+                (headers[offset], value)
             }
+            return Dictionary(pairs, uniquingKeysWith: { (first, _) in first })
         }
         let json = try JSONSerialization.data(withJSONObject: jsonData)
         _createFile(filePath.path, json)
