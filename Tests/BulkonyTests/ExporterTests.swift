@@ -49,8 +49,19 @@ final class ExporterTests: XCTestCase {
         let fileHandle = FileHandle(forReadingAtPath: "/tmp/test.json")
         let data = fileHandle?.readDataToEndOfFile()
         try fileHandle?.close()
-        try JSONSerialization.jsonObject(with: data!)
-        XCTAssertTrue(true)
+        let json = try JSONSerialization.jsonObject(with: data!)
+        let rows = json as! [[String: Any]]
+        XCTAssertEqual(4, rows.count)
+
+        let first = rows.first!
+        XCTAssertEqual(1, first["id"] as! Int)
+        XCTAssertEqual("\"Tatsuya Hotta", first["name"] as! String)
+        XCTAssertEqual("1974/03/15", first["birthday"] as! String)
+
+        let last = rows.last!
+        XCTAssertEqual(4, last["id"] as! Int)
+        XCTAssertEqual("Kanna Hashimoto", last["name"] as! String)
+        XCTAssertEqual("1999/02/03", last["birthday"] as! String)
         try FileManager.default.removeItem(atPath: "/tmp/test.json")
     }
 
