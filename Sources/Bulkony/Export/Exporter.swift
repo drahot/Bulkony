@@ -141,40 +141,6 @@ extension JsonExporter {
     }
 }
 
-public struct YamlExporter: Exporter {
-
-    public private(set) var filePath: URL
-    public private(set) var rowGenerator: RowGenerator
-
-    init(_ filePath: String, _ rowGenerator: RowGenerator) {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator)
-    }
-
-    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
-        self.filePath = filePath
-        self.rowGenerator = rowGenerator
-    }
-
-}
-
-extension YamlExporter {
-    public func export() throws {
-        let headers = rowGenerator.getHeaders()
-        guard !headers.isEmpty else {
-            throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
-        }
-        let yamlData: [[[String: Any]]] = try rowGenerator.getRows().map { data in
-            let pairs: [[String: Any]] = try _adjustData(headers, data).enumerated().map { offset, value in
-                [headers[offset]: value]
-            }
-            return pairs
-        }
-        let yaml = try Yams.dump(objects: yamlData)
-        _createFile(filePath.path, yaml.data(using: .utf8))
-    }
-}
-
 private func _createFile(_ path: String, _ data: Data?) {
     FileManager.default.createFile(
             atPath: path,
