@@ -4,7 +4,6 @@
 
 @testable import Bulkony
 import Foundation
-import Yams
 import XCTest
 
 final class ExporterTests: XCTestCase {
