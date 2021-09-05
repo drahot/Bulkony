@@ -22,7 +22,9 @@
 
 /* Begin PBXBuildFile section */
 		9990936C26E48F55004EC237 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 9990936B26E48F55004EC237 /* SwiftCSV */; };
+		9990936F26E49041004EC237 /* Importer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9990936E26E49041004EC237 /* Importer.swift */; };
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
+		B7CAA1C98ECFE0500019B052 /* RowHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */; };
 		OBJ_24 /* Bulkony.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Bulkony.swift */; };
 		OBJ_25 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Exporter.swift */; };
 		OBJ_26 /* RowGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* RowGenerator.swift */; };
@@ -36,21 +38,23 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = "Bulkony::BulkonyTests";
+			remoteGlobalIDString = Bulkony::BulkonyTests;
 			remoteInfo = BulkonyTests;
 		};
 		99E56B8126C1627C00CEA53E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = "Bulkony::Bulkony";
+			remoteGlobalIDString = Bulkony::Bulkony;
 			remoteInfo = Bulkony;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9990936E26E49041004EC237 /* Importer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importer.swift; sourceTree = "<group>"; };
 		99E56B8326C2A75900CEA53E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
+		B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowHandler.swift; sourceTree = "<group>"; };
 		"Bulkony::Bulkony::Product" /* Bulkony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bulkony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Bulkony::BulkonyTests::Product" /* BulkonyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = BulkonyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
@@ -80,6 +84,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9990936D26E49015004EC237 /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				9990936E26E49041004EC237 /* Importer.swift */,
+				B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */,
+			);
+			path = Import;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* Export */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,6 +151,7 @@
 		OBJ_8 /* Bulkony */ = {
 			isa = PBXGroup;
 			children = (
+				9990936D26E49015004EC237 /* Import */,
 				OBJ_9 /* Bulkony.swift */,
 				OBJ_10 /* Export */,
 			);
@@ -260,6 +274,8 @@
 				OBJ_24 /* Bulkony.swift in Sources */,
 				OBJ_25 /* Exporter.swift in Sources */,
 				OBJ_26 /* RowGenerator.swift in Sources */,
+				9990936F26E49041004EC237 /* Importer.swift in Sources */,
+				B7CAA1C98ECFE0500019B052 /* RowHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
