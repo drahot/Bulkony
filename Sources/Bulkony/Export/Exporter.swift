@@ -3,7 +3,6 @@
 //
 
 import Foundation
-import Yams
 
 public protocol Exporter {
     var filePath: URL { get }
