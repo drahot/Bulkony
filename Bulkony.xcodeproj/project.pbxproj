@@ -21,7 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		991915EC26DE521E00BD9858 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 991915EB26DE521E00BD9858 /* Yams */; };
+		9990936C26E48F55004EC237 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 9990936B26E48F55004EC237 /* SwiftCSV */; };
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
 		OBJ_24 /* Bulkony.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Bulkony.swift */; };
 		OBJ_25 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Exporter.swift */; };
@@ -65,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				991915EC26DE521E00BD9858 /* Yams in Frameworks */,
+				9990936C26E48F55004EC237 /* SwiftCSV in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +162,7 @@
 			);
 			name = Bulkony;
 			packageProductDependencies = (
-				991915EB26DE521E00BD9858 /* Yams */,
+				9990936B26E48F55004EC237 /* SwiftCSV */,
 			);
 			productName = Bulkony;
 			productReference = "Bulkony::Bulkony::Product" /* Bulkony.framework */;
@@ -218,7 +218,7 @@
 			);
 			mainGroup = OBJ_5;
 			packageReferences = (
-				991915EA26DE521E00BD9858 /* XCRemoteSwiftPackageReference "Yams" */,
+				9990936A26E48F55004EC237 /* XCRemoteSwiftPackageReference "SwiftCSV" */,
 			);
 			productRefGroup = OBJ_16 /* Products */;
 			projectDirPath = "";
@@ -608,21 +608,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		991915EA26DE521E00BD9858 /* XCRemoteSwiftPackageReference "Yams" */ = {
+		9990936A26E48F55004EC237 /* XCRemoteSwiftPackageReference "SwiftCSV" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/Yams.git";
+			repositoryURL = "https://github.com/swiftcsv/SwiftCSV";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.6;
+				minimumVersion = 0.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		991915EB26DE521E00BD9858 /* Yams */ = {
+		9990936B26E48F55004EC237 /* SwiftCSV */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 991915EA26DE521E00BD9858 /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
+			package = 9990936A26E48F55004EC237 /* XCRemoteSwiftPackageReference "SwiftCSV" */;
+			productName = SwiftCSV;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
