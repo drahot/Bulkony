@@ -10,6 +10,7 @@ import Foundation
 public protocol Importer {
     var filePath: URL { get }
     var rowHandler: RowHandler {get}
-    func execute() throws
+    func importDataWithHeader() throws
+    func importData() throws
 }
 
