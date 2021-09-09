@@ -33,14 +33,16 @@ public struct CsvImporter: Importer {
 extension CsvImporter {
 
     public func importDataWithHeader() throws {
+        var context = Context()
         try CSV(url: filePath).enumerateAsDictWithIndex { index, row in
-            rowHandler.handle(row: row, lineNumber: index)
+            rowHandler.handle(row: row, lineNumber: index, context: &context)
         }
     }
 
     public func importData() throws {
+        var context = Context()
         try CSV(url: filePath).enumerateAsArrayWithIndex { index, row in
-            rowHandler.handle(row: row, lineNumber: index)
+            rowHandler.handle(row: row, lineNumber: index, context: &context)
         }
     }
 

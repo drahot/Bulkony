@@ -25,6 +25,7 @@
 		9990936F26E49041004EC237 /* Importer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9990936E26E49041004EC237 /* Importer.swift */; };
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
 		B7CAA1C98ECFE0500019B052 /* RowHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */; };
+		B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CAB40A86661E762D99 /* Context.swift */; };
 		OBJ_24 /* Bulkony.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Bulkony.swift */; };
 		OBJ_25 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Exporter.swift */; };
 		OBJ_26 /* RowGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* RowGenerator.swift */; };
@@ -54,6 +55,7 @@
 		9990936E26E49041004EC237 /* Importer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importer.swift; sourceTree = "<group>"; };
 		99E56B8326C2A75900CEA53E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
+		B7CAA9CAB40A86661E762D99 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowHandler.swift; sourceTree = "<group>"; };
 		"Bulkony::Bulkony::Product" /* Bulkony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bulkony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Bulkony::BulkonyTests::Product" /* BulkonyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = BulkonyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +91,7 @@
 			children = (
 				9990936E26E49041004EC237 /* Importer.swift */,
 				B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */,
+				B7CAA9CAB40A86661E762D99 /* Context.swift */,
 			);
 			path = Import;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				OBJ_26 /* RowGenerator.swift in Sources */,
 				9990936F26E49041004EC237 /* Importer.swift in Sources */,
 				B7CAA1C98ECFE0500019B052 /* RowHandler.swift in Sources */,
+				B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

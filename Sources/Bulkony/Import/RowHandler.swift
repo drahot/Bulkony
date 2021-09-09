@@ -6,7 +6,7 @@ import Foundation
 
 public protocol RowHandler {
 
-    func handle(row: [String: String], lineNumber: UInt32)
-    func handle(row: [String], lineNumber: UInt32)
+    func handle(row: [String: String], lineNumber: UInt32, context: inout Context)
+    func handle(row: [String], lineNumber: UInt32, context: inout Context)
 
 }
