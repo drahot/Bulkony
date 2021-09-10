@@ -5,10 +5,13 @@
 import Foundation
 
 public protocol RowHandler {
+    typealias RowWithHeader = [String: String]
+    typealias Row = [String]
     typealias Errors = [Error]
     typealias ErrorsCollection = [Errors]
-    func handle(row: [String: String], lineNumber: UInt32, context: inout Context)
-    func handle(row: [String], lineNumber: UInt32, context: inout Context)
+
+    func handle(row: RowWithHeader, lineNumber: UInt32, context: inout Context)
+    func handle(row: Row, lineNumber: UInt32, context: inout Context)
     func validate(row: [String: String], lineNumber: UInt32, context: inout Context) -> [Error]
     func validate(row: [String], lineNumber: UInt32, context: inout Context) -> [Error]
     func onError(row: [String: String], lineNumber: UInt32, rowErrors: Errors, context: inout Context)
