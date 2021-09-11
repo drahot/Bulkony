@@ -12,8 +12,8 @@ public protocol RowHandler {
 
     func handle(row: RowWithHeader, lineNumber: UInt32, context: inout Context)
     func handle(row: Row, lineNumber: UInt32, context: inout Context)
-    func validate(row: RowWithHeader, lineNumber: UInt32, context: inout Context) -> [Error]
-    func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error]
-    func onError(row: RowWithHeader, lineNumber: UInt32, rowErrors: Errors, context: inout Context)
-    func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context)
+    func validate(row: RowWithHeader, lineNumber: UInt32, context: inout Context) -> [Error]?
+    func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error]?
+    func onError(row: RowWithHeader, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> Bool
+    func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> Bool
 }

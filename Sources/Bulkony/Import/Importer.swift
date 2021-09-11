@@ -34,15 +34,27 @@ extension CsvImporter {
 
     public func importDataWithHeader() throws {
         var context = Context()
-        try CSV(url: filePath).enumerateAsDictWithIndex { index, row in
-            rowHandler.handle(row: row, lineNumber: index, context: &context)
+        try CSV(url: filePath).enumerateAsDictWithIndex { index, row -> Bool in
+            if let errors = rowHandler.validate(row: row, lineNumber: index + 1, context: &context) {
+                if !rowHandler.onError(row: row, lineNumber: index + 1, rowErrors: errors, context: &context) {
+                    return false
+                }
+            }
+            rowHandler.handle(row: row, lineNumber: index + 1, context: &context)
+            return true
         }
     }
 
     public func importData() throws {
         var context = Context()
-        try CSV(url: filePath).enumerateAsArrayWithIndex { index, row in
-            rowHandler.handle(row: row, lineNumber: index, context: &context)
+        try CSV(url: filePath).enumerateAsArrayWithIndex { index, row -> Bool in
+            if let errors = rowHandler.validate(row: row, lineNumber: index + 1, context: &context) {
+                if !rowHandler.onError(row: row, lineNumber: index + 1, rowErrors: errors,  context: &context) {
+                    return false
+                }
+            }
+            rowHandler.handle(row: row, lineNumber: index + 1, context: &context)
+            return true
         }
     }
 
@@ -50,18 +62,22 @@ extension CsvImporter {
 
 fileprivate extension CSV {
 
-    func enumerateAsDictWithIndex(_ block: @escaping ((UInt32, [String : String])) -> ()) throws {
+    func enumerateAsDictWithIndex(_ block: @escaping ((UInt32, [String: String])) -> Bool) throws {
         var index: UInt32 = 0
         try enumerateAsDict { row in
-            block((index, row))
+            if !block((index, row)) {
+                return
+            }
             index += 1
         }
     }
 
-    func enumerateAsArrayWithIndex(_ block: @escaping ((UInt32, [String])) -> ()) throws {
+    func enumerateAsArrayWithIndex(_ block: @escaping ((UInt32, [String])) -> Bool) throws {
         var index: UInt32 = 0
         try enumerateAsArray { row in
-            block((index, row))
+            if !block((index, row)) {
+                return
+            }
             index += 1
         }
     }
