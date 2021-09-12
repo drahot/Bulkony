@@ -47,14 +47,15 @@ extension CsvImporter {
         for (index, r) in rows.enumerated() {
             let lineNumber = UInt32(index + 1)
             let row = r as! [R]
+
             let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context)
-            
             if !errors.isEmpty {
                 if rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
                     return
                 }
                 continue
             }
+
             rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
         }
     }
