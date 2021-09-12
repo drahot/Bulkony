@@ -46,7 +46,6 @@ extension CsvImporter {
         var context = Context()
         for (index, r) in rows.enumerated() {
             let lineNumber = UInt32(index + 1)
-
             let row = r as! [R]
             let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context)
             
