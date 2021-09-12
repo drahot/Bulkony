@@ -33,28 +33,29 @@ public struct CsvImporter: Importer {
 extension CsvImporter {
 
     public func importDataWithHeader() throws {
-        var context = Context()
-        for (index, row) in try CSV(url: filePath).namedRows.enumerated() {
-            let lineNumber = UInt32(index + 1)
-            if let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context) {
-                if !rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) {
-                    return
-                }
-            }
-            rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
-        }
+        let rows: [[String: String]] = try CSV(url: filePath).namedRows
+        processImport(rows: rows)
     }
 
     public func importData() throws {
+        let rows: [[String]] = try CSV(url: filePath).enumeratedRows
+        processImport(rows: rows)
+    }
+    
+    private func processImport<R>(rows: [R]) {
         var context = Context()
-        for (index, row) in try CSV(url: filePath).enumeratedRows.enumerated() {
+        for (index, row) in rows.enumerated() {
             let lineNumber = UInt32(index + 1)
-            if let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context) {
-                if !rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) {
+            
+            let errors = rowHandler.validate(row: row as! [R], lineNumber: lineNumber, context: &context)
+            
+            if !errors.isEmpty {
+                if rowHandler.onError(row: row as! [R], lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
                     return
                 }
+                continue
             }
-            rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
+            rowHandler.handle(row: row as! [R], lineNumber: lineNumber, context: &context)
         }
     }
 
