@@ -34,51 +34,27 @@ extension CsvImporter {
 
     public func importDataWithHeader() throws {
         var context = Context()
-        try CSV(url: filePath).enumerateAsDictWithIndex { index, row -> Bool in
-            if let errors = rowHandler.validate(row: row, lineNumber: index + 1, context: &context) {
-                if !rowHandler.onError(row: row, lineNumber: index + 1, rowErrors: errors, context: &context) {
-                    return false
+        for (index, row) in try CSV(url: filePath).namedRows.enumerated() {
+            let lineNumber = UInt32(index + 1)
+            if let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context) {
+                if !rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) {
+                    return
                 }
             }
-            rowHandler.handle(row: row, lineNumber: index + 1, context: &context)
-            return true
+            rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
         }
     }
 
     public func importData() throws {
         var context = Context()
-        try CSV(url: filePath).enumerateAsArrayWithIndex { index, row -> Bool in
-            if let errors = rowHandler.validate(row: row, lineNumber: index + 1, context: &context) {
-                if !rowHandler.onError(row: row, lineNumber: index + 1, rowErrors: errors,  context: &context) {
-                    return false
+        for (index, row) in try CSV(url: filePath).enumeratedRows.enumerated() {
+            let lineNumber = UInt32(index + 1)
+            if let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context) {
+                if !rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) {
+                    return
                 }
             }
-            rowHandler.handle(row: row, lineNumber: index + 1, context: &context)
-            return true
-        }
-    }
-
-}
-
-fileprivate extension CSV {
-
-    func enumerateAsDictWithIndex(_ block: @escaping ((UInt32, [String: String])) -> Bool) throws {
-        var index: UInt32 = 0
-        try enumerateAsDict { row in
-            if !block((index, row)) {
-                return
-            }
-            index += 1
-        }
-    }
-
-    func enumerateAsArrayWithIndex(_ block: @escaping ((UInt32, [String])) -> Bool) throws {
-        var index: UInt32 = 0
-        try enumerateAsArray { row in
-            if !block((index, row)) {
-                return
-            }
-            index += 1
+            rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
         }
     }
 
