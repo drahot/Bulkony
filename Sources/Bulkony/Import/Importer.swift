@@ -44,18 +44,19 @@ extension CsvImporter {
     
     private func processImport<R>(rows: [R]) {
         var context = Context()
-        for (index, row) in rows.enumerated() {
+        for (index, r) in rows.enumerated() {
             let lineNumber = UInt32(index + 1)
-            
-            let errors = rowHandler.validate(row: row as! [R], lineNumber: lineNumber, context: &context)
+
+            let row = r as! [R]
+            let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context)
             
             if !errors.isEmpty {
-                if rowHandler.onError(row: row as! [R], lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
+                if rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
                     return
                 }
                 continue
             }
-            rowHandler.handle(row: row as! [R], lineNumber: lineNumber, context: &context)
+            rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
         }
     }
 
