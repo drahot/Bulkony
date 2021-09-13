@@ -40,14 +40,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = Bulkony::BulkonyTests;
+			remoteGlobalIDString = "Bulkony::BulkonyTests";
 			remoteInfo = BulkonyTests;
 		};
 		99E56B8126C1627C00CEA53E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJ_1 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = Bulkony::Bulkony;
+			remoteGlobalIDString = "Bulkony::Bulkony";
 			remoteInfo = Bulkony;
 		};
 /* End PBXContainerItemProxy section */
@@ -55,6 +55,7 @@
 /* Begin PBXFileReference section */
 		9990936E26E49041004EC237 /* Importer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importer.swift; sourceTree = "<group>"; };
 		99E56B8326C2A75900CEA53E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImporterTests.swift; sourceTree = "<group>"; };
 		B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 		B7CAA507E01E432B41E1A08B /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		B7CAA9CAB40A86661E762D99 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 			children = (
 				OBJ_15 /* BulkonyTests.swift */,
 				B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */,
+				B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */,
 			);
 			name = BulkonyTests;
 			path = Tests/BulkonyTests;
@@ -323,7 +325,9 @@
 		OBJ_21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -355,7 +359,9 @@
 		OBJ_22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -527,6 +533,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 53VW4V2YT2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -557,6 +564,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 53VW4V2YT2;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
