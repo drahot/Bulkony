@@ -11,8 +11,7 @@ final class ImporterTests: XCTestCase {
     func testsCsvImporter() {
         let tempDir = NSTemporaryDirectory()
         let filename = NSUUID().uuidString + ".csv"
-        _ = URL(fileURLWithPath: tempDir).appendingPathComponent(filename)
-
+        let url = URL(fileURLWithPath: tempDir).appendingPathComponent(filename)
     }
 
 }
