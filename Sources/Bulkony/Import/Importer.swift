@@ -10,21 +10,20 @@ import SwiftCSV
 
 public protocol Importer {
     var filePath: URL { get }
-    var rowHandler: RowHandler { get }
-    func importDataWithHeader() throws
+    var rowHandler: RowVisitor { get }
     func importData() throws
 }
 
 public struct CsvImporter: Importer {
     public private(set) var filePath: URL
-    public private(set) var rowHandler: RowHandler
+    public private(set) var rowHandler: RowVisitor
 
-    init(_ filePath: String, _ rowHandler: RowHandler) {
+    init(_ filePath: String, _ rowHandler: RowVisitor) {
         let url = URL(fileURLWithPath: filePath)
         self.init(url, rowHandler)
     }
 
-    init(_ filePath: URL, _ rowHandler: RowHandler) {
+    init(_ filePath: URL, _ rowHandler: RowVisitor) {
         self.filePath = filePath
         self.rowHandler = rowHandler
     }
@@ -32,21 +31,15 @@ public struct CsvImporter: Importer {
 
 extension CsvImporter {
 
-    public func importDataWithHeader() throws {
-        let rows: [[String: String]] = try CSV(url: filePath).namedRows
-        processImport(rows: rows)
-    }
-
     public func importData() throws {
         let rows: [[String]] = try CSV(url: filePath).enumeratedRows
         processImport(rows: rows)
     }
     
-    private func processImport<R>(rows: [R]) {
+    private func processImport(rows: [[String]]) {
         var context = Context()
-        for (index, r) in rows.enumerated() {
+        for (index, row) in rows.enumerated() {
             let lineNumber = UInt32(index + 1)
-            let row = r as! [R]
 
             let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context)
             if !errors.isEmpty {
@@ -60,4 +53,17 @@ extension CsvImporter {
         }
     }
 
+}
+
+final class RowVisitorImpl: RowVisitor {
+    func handle(row: [String], lineNumber: UInt32, context: inout Context) {
+    }
+    
+    func validate(row: [String], lineNumber: UInt32, context: inout Context) -> [Error] {
+        [Error]()
+    }
+    
+    func onError(row: [String], lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation {
+        ErrorContinuation.continuation
+    }
 }

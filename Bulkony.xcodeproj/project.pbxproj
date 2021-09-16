@@ -24,7 +24,7 @@
 		9990936C26E48F55004EC237 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 9990936B26E48F55004EC237 /* SwiftCSV */; };
 		9990936F26E49041004EC237 /* Importer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9990936E26E49041004EC237 /* Importer.swift */; };
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
-		B7CAA1C98ECFE0500019B052 /* RowHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */; };
+		B7CAA1C98ECFE0500019B052 /* RowVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */; };
 		B7CAA3D704F9983AFE639D15 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA507E01E432B41E1A08B /* Error.swift */; };
 		B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CAB40A86661E762D99 /* Context.swift */; };
 		OBJ_24 /* Bulkony.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Bulkony.swift */; };
@@ -59,7 +59,7 @@
 		B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
 		B7CAA507E01E432B41E1A08B /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		B7CAA9CAB40A86661E762D99 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
-		B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowHandler.swift; sourceTree = "<group>"; };
+		B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowVisitor.swift; sourceTree = "<group>"; };
 		"Bulkony::Bulkony::Product" /* Bulkony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bulkony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"Bulkony::BulkonyTests::Product" /* BulkonyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = BulkonyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				9990936E26E49041004EC237 /* Importer.swift */,
-				B7CAA9CC93184E2E6D2D693F /* RowHandler.swift */,
+				B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */,
 				B7CAA9CAB40A86661E762D99 /* Context.swift */,
 				B7CAA507E01E432B41E1A08B /* Error.swift */,
 			);
@@ -283,7 +283,7 @@
 				OBJ_25 /* Exporter.swift in Sources */,
 				OBJ_26 /* RowGenerator.swift in Sources */,
 				9990936F26E49041004EC237 /* Importer.swift in Sources */,
-				B7CAA1C98ECFE0500019B052 /* RowHandler.swift in Sources */,
+				B7CAA1C98ECFE0500019B052 /* RowVisitor.swift in Sources */,
 				B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */,
 				B7CAA3D704F9983AFE639D15 /* Error.swift in Sources */,
 			);

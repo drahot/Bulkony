@@ -2,7 +2,7 @@
 // Created by 堀田竜也 on 2021/09/13.
 //
 
-//@testable import Bulkony
+@testable import Bulkony
 import Foundation
 import XCTest
 
@@ -24,16 +24,3 @@ final class ImporterTests: XCTestCase {
 
 }
 
-fileprivate class RowHandlerImpl: RowHandler {
-    func handle<R>(row: [R], lineNumber: UInt32, context: inout Context) {
-    }
-    
-    func validate<R>(row: [R], lineNumber: UInt32, context: inout Context) -> [Error] {
-        [Error]()
-    }
-    
-    func onError<R>(row: [R], lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation {
-        ErrorContinuation.continuation
-    }
-    
-}
