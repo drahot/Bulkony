@@ -18,3 +18,13 @@ public protocol RowVisitor {
     func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error]
     func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation
 }
+
+public protocol DictionaryRowVisitor {
+    typealias Row = [String: String]
+    typealias Errors = [Error]
+    typealias ErrorsCollection = [Errors]
+
+    func handle(row: Row, lineNumber: UInt32, context: inout Context)
+    func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error]
+    func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation
+}
