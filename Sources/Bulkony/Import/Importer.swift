@@ -9,30 +9,29 @@ import Foundation
 import SwiftCSV
 
 public protocol Importer {
-    var filePath: URL { get }
-    var rowHandler: RowVisitor { get }
     func importData() throws
 }
 
-public struct CsvImporter: Importer {
-    public private(set) var filePath: URL
-    public private(set) var rowHandler: RowVisitor
+public struct ArrayCsvImporter: Importer {
+    
+    private var filePath: URL
+    private var rowVisitor: ArrayRowVisitor
 
-    init(_ filePath: String, _ rowHandler: RowVisitor) {
+    init(_ filePath: String, _ rowVisitor: ArrayRowVisitor) {
         let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowHandler)
+        self.init(url, rowVisitor)
     }
 
-    init(_ filePath: URL, _ rowHandler: RowVisitor) {
+    init(_ filePath: URL, _ rowVisitor: ArrayRowVisitor) {
         self.filePath = filePath
-        self.rowHandler = rowHandler
+        self.rowVisitor = rowVisitor
     }
 }
 
-extension CsvImporter {
+extension ArrayCsvImporter {
 
     public func importData() throws {
-        let rows: [[String]] = try CSV(url: filePath).enumeratedRows
+        let rows = try CSV(url: filePath).enumeratedRows
         processImport(rows: rows)
     }
     
@@ -41,29 +40,16 @@ extension CsvImporter {
         for (index, row) in rows.enumerated() {
             let lineNumber = UInt32(index + 1)
 
-            let errors = rowHandler.validate(row: row, lineNumber: lineNumber, context: &context)
+            let errors = rowVisitor.validate(row: row, lineNumber: lineNumber, context: &context)
             if !errors.isEmpty {
-                if rowHandler.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
+                if rowVisitor.onError(row: row, lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
                     return
                 }
                 continue
             }
 
-            rowHandler.handle(row: row, lineNumber: lineNumber, context: &context)
+            rowVisitor.handle(row: row, lineNumber: lineNumber, context: &context)
         }
     }
 
-}
-
-final class RowVisitorImpl: RowVisitor {
-    func handle(row: [String], lineNumber: UInt32, context: inout Context) {
-    }
-    
-    func validate(row: [String], lineNumber: UInt32, context: inout Context) -> [Error] {
-        [Error]()
-    }
-    
-    func onError(row: [String], lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation {
-        ErrorContinuation.continuation
-    }
 }

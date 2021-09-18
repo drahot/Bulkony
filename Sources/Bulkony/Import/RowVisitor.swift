@@ -10,7 +10,7 @@ public enum ErrorContinuation {
 }
 
 public protocol RowVisitor {
-    typealias Row = [String]
+    associatedtype Row
     typealias Errors = [Error]
     typealias ErrorsCollection = [Errors]
 
@@ -19,12 +19,27 @@ public protocol RowVisitor {
     func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation
 }
 
-public protocol DictionaryRowVisitor {
-    typealias Row = [String: String]
-    typealias Errors = [Error]
-    typealias ErrorsCollection = [Errors]
+open class ArrayRowVisitor: RowVisitor {
+    public typealias Row = [String]
 
-    func handle(row: Row, lineNumber: UInt32, context: inout Context)
-    func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error]
-    func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation
+    public func handle(row: Row, lineNumber: UInt32, context: inout Context) {
+    }
+    
+    public func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error] {
+        [Error]()
+    }
+    
+    public func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation {
+        ErrorContinuation.continuation
+    }
+
 }
+
+public class EchoArrayRowVisitor: ArrayRowVisitor {
+    
+    public override func handle(row: Row, lineNumber: UInt32, context: inout Context) {
+        print("\(row)")
+    }
+
+}
+
