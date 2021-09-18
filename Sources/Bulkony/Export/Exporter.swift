@@ -5,17 +5,17 @@
 import Foundation
 
 public protocol Exporter {
-    var filePath: URL { get }
-    var rowGenerator: RowGenerator { get }
+    
     func export() throws
+    
 }
 
 public struct CsvExporter: Exporter {
 
     private let NEW_LINE = "\r\n"
     private let SEPARATOR: Character = ","
-    public private(set) var filePath: URL
-    public private(set) var rowGenerator: RowGenerator
+    private var filePath: URL
+    private var rowGenerator: RowGenerator
 
     init(_ filePath: String, _ rowGenerator: RowGenerator) {
         let url = URL(fileURLWithPath: filePath)
@@ -30,17 +30,19 @@ public struct CsvExporter: Exporter {
 }
 
 extension CsvExporter {
+
     public func export() throws {
         try _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
     }
+
 }
 
 public struct TsvExporter: Exporter {
 
     private let NEW_LINE = "\n"
     private let SEPARATOR: Character = "\t"
-    public private(set) var filePath: URL
-    public private(set) var rowGenerator: RowGenerator
+    private var filePath: URL
+    private var rowGenerator: RowGenerator
 
     init(_ filePath: String, _ rowGenerator: RowGenerator) {
         let url = URL(fileURLWithPath: filePath)
@@ -55,17 +57,19 @@ public struct TsvExporter: Exporter {
 }
 
 extension TsvExporter {
+
     public func export() throws {
         try _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE)
     }
+
 }
 
 public struct XmlExporter: Exporter {
 
-    public private(set) var filePath: URL
-    public private(set) var rowGenerator: RowGenerator
-    public private(set) var rootName: String
-    public private(set) var rowName: String
+    private var filePath: URL
+    private var rowGenerator: RowGenerator
+    private var rootName: String
+    private var rowName: String
 
     init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootName: String = "root",
          _ rowName: String = "row") {
@@ -84,6 +88,7 @@ public struct XmlExporter: Exporter {
 }
 
 extension XmlExporter {
+
     public func export() throws {
         let root = XMLElement(name: rootName)
         let xml = XMLDocument(rootElement: root)
@@ -92,6 +97,7 @@ extension XmlExporter {
         guard !headers.isEmpty else {
             throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
         }
+
         try rowGenerator.getRows().forEach { data in
             let row = XMLElement(name: rowName)
             root.addChild(row)
@@ -102,14 +108,16 @@ extension XmlExporter {
                 row.addAttribute(attribute)
             }
         }
+
         _createFile(filePath.path, xml.xmlString.data(using: .utf8))
     }
+
 }
 
 public struct JsonExporter: Exporter {
 
-    public private(set) var filePath: URL
-    public private(set) var rowGenerator: RowGenerator
+    private var filePath: URL
+    private var rowGenerator: RowGenerator
 
     init(_ filePath: String, _ rowGenerator: RowGenerator) {
         let url = URL(fileURLWithPath: filePath)
@@ -124,6 +132,7 @@ public struct JsonExporter: Exporter {
 }
 
 extension JsonExporter {
+
     public func export() throws {
         let headers = rowGenerator.getHeaders()
         guard !headers.isEmpty else {
@@ -138,6 +147,7 @@ extension JsonExporter {
         let json = try JSONSerialization.data(withJSONObject: jsonData)
         _createFile(filePath.path, json)
     }
+
 }
 
 private func _createFile(_ path: String, _ data: Data?) {
@@ -201,11 +211,12 @@ private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
     return enclosedInDoubleQuote ? "\"\(result)\"" : result
 }
 
-private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {
+private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {    
     let count = data.count - headers.count
     if count < 0 {
         throw NSError(domain: "header count does not match rows", code: -1, userInfo: nil)
     }
+    
     return data.dropLast(count).map {
         $0
     }
