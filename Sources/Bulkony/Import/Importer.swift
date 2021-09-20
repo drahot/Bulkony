@@ -18,8 +18,7 @@ public struct ArrayCsvImporter: Importer {
     private var rowVisitor: ArrayRowVisitor
 
     init(_ filePath: String, _ rowVisitor: ArrayRowVisitor) {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowVisitor)
+        self.init(.init(fileURLWithPath: filePath), rowVisitor)
     }
 
     init(_ filePath: URL, _ rowVisitor: ArrayRowVisitor) {
@@ -43,8 +42,7 @@ public struct DictionaryCsvImporter: Importer {
     private var rowVisitor: DictionaryRowVisitor
 
     init(_ filePath: String, _ rowVisitor: DictionaryRowVisitor) {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowVisitor)
+        self.init(.init(fileURLWithPath: filePath), rowVisitor)
     }
 
     init(_ filePath: URL, _ rowVisitor: DictionaryRowVisitor) {

@@ -18,8 +18,7 @@ public struct CsvExporter: Exporter {
     private var rowGenerator: RowGenerator
 
     init(_ filePath: String, _ rowGenerator: RowGenerator) {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator)
+        self.init(.init(fileURLWithPath: filePath), rowGenerator)
     }
 
     init(_ filePath: URL, _ rowGenerator: RowGenerator) {
@@ -45,8 +44,7 @@ public struct TsvExporter: Exporter {
     private var rowGenerator: RowGenerator
 
     init(_ filePath: String, _ rowGenerator: RowGenerator) {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator)
+        self.init(.init(fileURLWithPath: filePath), rowGenerator)
     }
 
     init(_ filePath: URL, _ rowGenerator: RowGenerator) {
@@ -73,8 +71,7 @@ public struct XmlExporter: Exporter {
 
     init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootName: String = "root",
          _ rowName: String = "row") {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator, rootName, rowName)
+        self.init(.init(fileURLWithPath: filePath), rowGenerator, rootName, rowName)
     }
 
     init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootName: String = "root",
@@ -120,8 +117,7 @@ public struct JsonExporter: Exporter {
     private var rowGenerator: RowGenerator
 
     init(_ filePath: String, _ rowGenerator: RowGenerator) {
-        let url = URL(fileURLWithPath: filePath)
-        self.init(url, rowGenerator)
+        self.init(.init(fileURLWithPath: filePath), rowGenerator)
     }
 
     init(_ filePath: URL, _ rowGenerator: RowGenerator) {
@@ -211,7 +207,8 @@ private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
     return enclosedInDoubleQuote ? "\"\(result)\"" : result
 }
 
-private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {    
+private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {
+    
     let count = data.count - headers.count
     if count < 0 {
         throw NSError(domain: "header count does not match rows", code: -1, userInfo: nil)
