@@ -23,11 +23,6 @@ public protocol RowVisitor {
 
 extension RowVisitor {
     
-    public func visit(row: Row, lineNumber: UInt32, context: inout Context) {
-        print("No Implemented!!!")
-        abort()
-   }
-    
     public func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error] {
         [Error]()
     }
@@ -42,11 +37,21 @@ open class ArrayRowVisitor: RowVisitor {
     
     public typealias Row = [String]
     
+    public func visit(row: Row, lineNumber: UInt32, context: inout Context) {
+        print("No Implemented!!!")
+        abort()
+   }
+    
 }
 
 
 open class DictionaryRowVisitor: RowVisitor {
     
     public typealias Row = [String: String]
+    
+    public func visit(row: Row, lineNumber: UInt32, context: inout Context) {
+        print("No Implemented!!!")
+        abort()
+   }
     
 }

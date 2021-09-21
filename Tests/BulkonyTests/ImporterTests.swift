@@ -14,10 +14,10 @@ final class ImporterTests: XCTestCase {
         let url: URL = .init(fileURLWithPath: tempDir).appendingPathComponent(filename)
         print("\(url)")
         let content = """
-            id,name,email
-            1,alice,alice@example.com
-            2,bob,bob@example.com
-            3,charlie,charlie@example.com
+        id,name,email
+        1,alice,alice@example.com
+        2,bob,bob@example.com
+        3,charlie,charlie@example.com
         """
         FileManager.default.createFile(atPath: url.path, contents: content.data(using: .utf8))
         
@@ -26,11 +26,11 @@ final class ImporterTests: XCTestCase {
         try importer.importData()
         let csvString = rowVisitor.data
         let expected = """
-            1,alice,alice@example.com
-            2,bob,bob@example.com
-            3,charlie,charlie@example.com
+        1,alice,alice@example.com
+        2,bob,bob@example.com
+        3,charlie,charlie@example.com
         """
-        XCTAssertEqual(expected, csvString)
+        XCTAssertEqual(expected, csvString.trimmingCharacters(in: .whitespacesAndNewlines))
         
         try FileManager.default.removeItem(atPath: url.path)
     }
@@ -42,8 +42,13 @@ fileprivate class TextDictionaryRowVisitor: DictionaryRowVisitor {
     
     public private(set) var data: String = ""
     
-    public  func visit(row: Row, lineNumber: UInt32, context: inout Context) {
-        data += row.values.joined(separator: ",") + "\n"
+    private var columns = ["id", "name", "email"]
+    
+    public  override func visit(row: Row, lineNumber: UInt32, context: inout Context) {
+        let values: [String] = columns.map { column in
+            row[column]!
+        }
+        data += values.joined(separator: ",") + "\n"
     }
     
     
