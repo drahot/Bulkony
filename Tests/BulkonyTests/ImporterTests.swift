@@ -30,7 +30,7 @@ final class ImporterTests: XCTestCase {
         2,bob,bob@example.com
         3,charlie,charlie@example.com
         """
-        XCTAssertEqual(expected, csvString.trimmingCharacters(in: .whitespacesAndNewlines))
+        XCTAssertEqual(expected, csvString)
         
         try FileManager.default.removeItem(atPath: url.path)
     }
@@ -48,7 +48,10 @@ fileprivate class TextDictionaryRowVisitor: DictionaryRowVisitor {
         let values: [String] = columns.map { column in
             row[column]!
         }
-        data += values.joined(separator: ",") + "\n"
+        if !data.isEmpty {
+            data += "\n"
+        }
+        data += values.joined(separator: ",")
     }
     
     
