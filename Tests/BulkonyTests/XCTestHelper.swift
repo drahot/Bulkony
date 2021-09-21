@@ -7,13 +7,13 @@
 
 import Foundation
 
-public protocol XCTestsHelper {
+public protocol XCTestHelper {
     
     func getContents(_ path: String) throws -> Data?
     
 }
 
-extension XCTestsHelper {
+extension XCTestHelper {
     
     public func getContents(_ path: String) throws -> Data? {
         let fileHandle = FileHandle(forReadingAtPath: path)

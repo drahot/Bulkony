@@ -6,7 +6,7 @@
 import Foundation
 import XCTest
 
-final class ExporterTests: XCTestCase, XCTestsHelper {
+final class ExporterTests: XCTestCase, XCTestHelper {
     func testsCsvExporter() throws {
         let exporter = CsvExporter("/tmp/test.csv", ArrayRowGenerator(headers: getHeaders(), rows: getRows()))
         try exporter.export()
