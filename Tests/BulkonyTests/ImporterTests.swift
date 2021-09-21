@@ -44,7 +44,7 @@ fileprivate class TextDictionaryRowVisitor: DictionaryRowVisitor {
     
     private var columns = ["id", "name", "email"]
     
-    public  override func visit(row: Row, lineNumber: UInt32, context: inout Context) {
+    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) {
         let values: [String] = columns.map { column in
             row[column]!
         }
