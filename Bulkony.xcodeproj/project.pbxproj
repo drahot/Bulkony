@@ -21,6 +21,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		99525E7326F8462E00C69F40 /* ImporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */; };
+		9979B95026FA14AA0088A705 /* XCTestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9979B94F26FA14AA0088A705 /* XCTestHelper.swift */; };
 		9990936C26E48F55004EC237 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 9990936B26E48F55004EC237 /* SwiftCSV */; };
 		9990936F26E49041004EC237 /* Importer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9990936E26E49041004EC237 /* Importer.swift */; };
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
@@ -53,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9979B94F26FA14AA0088A705 /* XCTestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XCTestHelper.swift; sourceTree = "<group>"; };
 		9990936E26E49041004EC237 /* Importer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importer.swift; sourceTree = "<group>"; };
 		99E56B8326C2A75900CEA53E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImporterTests.swift; sourceTree = "<group>"; };
@@ -122,6 +125,7 @@
 			children = (
 				OBJ_15 /* BulkonyTests.swift */,
 				B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */,
+				9979B94F26FA14AA0088A705 /* XCTestHelper.swift */,
 				B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */,
 			);
 			name = BulkonyTests;
@@ -301,6 +305,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				9979B95026FA14AA0088A705 /* XCTestHelper.swift in Sources */,
+				99525E7326F8462E00C69F40 /* ImporterTests.swift in Sources */,
 				OBJ_44 /* BulkonyTests.swift in Sources */,
 				B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */,
 			);

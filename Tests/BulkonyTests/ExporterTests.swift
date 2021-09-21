@@ -6,7 +6,7 @@
 import Foundation
 import XCTest
 
-final class ExporterTests: XCTestCase {
+final class ExporterTests: XCTestCase, XCTestsHelper {
     func testsCsvExporter() throws {
         let exporter = CsvExporter("/tmp/test.csv", ArrayRowGenerator(headers: getHeaders(), rows: getRows()))
         try exporter.export()
@@ -71,17 +71,6 @@ final class ExporterTests: XCTestCase {
             [4, "Kanna Hashimoto", formatter.string(from: formatter.date(from: "1999/02/03")!)]
         ]
         return AnySequence(data)
-    }
-
-    private func getContents(_ path: String) throws -> Data? {
-        let fileHandle = FileHandle(forReadingAtPath: path)
-        defer {
-            do {
-                try fileHandle?.close()
-            } catch {
-            }
-        }
-        return fileHandle?.readDataToEndOfFile()
     }
 }
 
