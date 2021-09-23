@@ -5,14 +5,14 @@
 import Foundation
 
 public struct Context: Collection {
-    
+
     public typealias Index = Array<Any>.Index
     public typealias Element = Any
-    
+
     public var startIndex: Index {
         storage.startIndex
     }
-    
+
     public var endIndex: Index {
         storage.endIndex
     }

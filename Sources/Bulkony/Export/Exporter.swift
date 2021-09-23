@@ -5,15 +5,15 @@
 import Foundation
 
 public protocol Exporter {
-    
+
     func export() throws
-    
+
 }
 
 public struct CsvExporter: Exporter {
 
-    private let NEW_LINE = "\r\n"
-    private let SEPARATOR: Character = ","
+    private let newLine = "\r\n"
+    private let separator: Character = ","
     private var filePath: URL
     private var rowGenerator: RowGenerator
 
@@ -31,15 +31,15 @@ public struct CsvExporter: Exporter {
 extension CsvExporter {
 
     public func export() throws {
-        try _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE, true)
+        try _exportCsv(filePath, rowGenerator, separator, newLine, true)
     }
 
 }
 
 public struct TsvExporter: Exporter {
 
-    private let NEW_LINE = "\n"
-    private let SEPARATOR: Character = "\t"
+    private let newLine = "\n"
+    private let separator: Character = "\t"
     private var filePath: URL
     private var rowGenerator: RowGenerator
 
@@ -57,7 +57,7 @@ public struct TsvExporter: Exporter {
 extension TsvExporter {
 
     public func export() throws {
-        try _exportCsv(filePath, rowGenerator, SEPARATOR, NEW_LINE)
+        try _exportCsv(filePath, rowGenerator, separator, newLine)
     }
 
 }
@@ -69,13 +69,17 @@ public struct XmlExporter: Exporter {
     private var rootName: String
     private var rowName: String
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator, _ rootName: String = "root",
-         _ rowName: String = "row") {
+    init(
+        _ filePath: String, _ rowGenerator: RowGenerator, _ rootName: String = "root",
+        _ rowName: String = "row"
+    ) {
         self.init(.init(fileURLWithPath: filePath), rowGenerator, rootName, rowName)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator, _ rootName: String = "root",
-         _ rowName: String = "row") {
+    init(
+        _ filePath: URL, _ rowGenerator: RowGenerator, _ rootName: String = "root",
+        _ rowName: String = "row"
+    ) {
         self.rootName = rootName
         self.rowName = rowName
         self.filePath = filePath
@@ -134,7 +138,7 @@ extension JsonExporter {
         guard !headers.isEmpty else {
             throw NSError(domain: "headers is empty", code: -2, userInfo: nil)
         }
-        let jsonData: [Dictionary<String, Any>] = try rowGenerator.getRows().map { data in
+        let jsonData: [[String: Any]] = try rowGenerator.getRows().map { data in
             let pairs: [(String, Any)] = try _adjustData(headers, data).enumerated().map { offset, value in
                 (headers[offset], value)
             }
@@ -148,18 +152,19 @@ extension JsonExporter {
 
 private func _createFile(_ path: String, _ data: Data?) {
     FileManager.default.createFile(
-            atPath: path,
-            contents: data,
-            attributes: nil
+        atPath: path,
+        contents: data,
+        attributes: nil
     )
 }
 
 private func _exportCsv(
-        _ filePath: URL,
-        _ rowGenerator: RowGenerator,
-        _ separator: Character,
-        _ newLine: String,
-        _ withBOM: Bool = false) throws {
+    _ filePath: URL,
+    _ rowGenerator: RowGenerator,
+    _ separator: Character,
+    _ newLine: String,
+    _ withBOM: Bool = false
+) throws {
 
     let headers = rowGenerator.getHeaders()
 
@@ -208,12 +213,12 @@ private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
 }
 
 private func _adjustData(_ headers: [String], _ data: [Any]) throws -> [Any] {
-    
+
     let count = data.count - headers.count
     if count < 0 {
         throw NSError(domain: "header count does not match rows", code: -1, userInfo: nil)
     }
-    
+
     return data.dropLast(count).map {
         $0
     }

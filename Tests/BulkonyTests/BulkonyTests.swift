@@ -1,5 +1,6 @@
-@testable import Bulkony
 import XCTest
+
+@testable import Bulkony
 
 final class BulkonyTests: XCTestCase {
     func testExample() {

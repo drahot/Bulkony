@@ -31,26 +31,28 @@ public protocol RowVisitor: AnyObject {
 }
 
 open class ArrayRowVisitor: RowVisitor {
-    
+
     public typealias Row = [String]
-    
+
     public func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
         notImplemented()
-   }
+    }
 
     public func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
         [RowError]()
     }
 
-    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws -> ErrorContinuation {
+    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws
+        -> ErrorContinuation
+    {
         ErrorContinuation.continuation
     }
 }
 
 open class DictionaryRowVisitor: RowVisitor {
-    
+
     public typealias Row = [String: String]
-    
+
     public func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
         notImplemented()
     }
@@ -59,7 +61,9 @@ open class DictionaryRowVisitor: RowVisitor {
         [RowError]()
     }
 
-    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws -> ErrorContinuation {
+    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws
+        -> ErrorContinuation
+    {
         ErrorContinuation.continuation
     }
 }

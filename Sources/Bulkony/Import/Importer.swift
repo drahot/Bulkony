@@ -59,7 +59,6 @@ public struct DictionaryCsvImporter: Importer {
     }
 }
 
-
 extension DictionaryCsvImporter {
     public func importData() throws -> Result<(), ImportError> {
         let rows: [[String: String]] = try CSV(url: filePath).namedRows
@@ -75,7 +74,12 @@ private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throw
         let errors = try rowVisitor.validate(row: row as! V.Row, lineNumber: lineNumber, context: &context)
         if !errors.isEmpty {
             errorList.append(errors)
-            if try rowVisitor.onError(row: row as! V.Row, lineNumber: lineNumber, errors: errors, context: &context) == .abort {
+            if try rowVisitor.onError(
+                row: row as! V.Row,
+                lineNumber: lineNumber,
+                errors: errors,
+                context: &context
+            ) == .abort {
                 return .failure(ImportError(errors: errorList))
             }
             continue
@@ -84,6 +88,6 @@ private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throw
     }
 
     return errorList.isEmpty
-            ? .success(())
-            : .failure(ImportError(errors: errorList))
+        ? .success(())
+        : .failure(ImportError(errors: errorList))
 }
