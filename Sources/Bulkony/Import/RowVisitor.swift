@@ -9,49 +9,62 @@ public enum ErrorContinuation {
     case abort
 }
 
-public protocol RowVisitor {
-    
-    associatedtype Row
-    typealias Errors = [Error]
-    typealias ErrorsCollection = [Errors]
+public struct RowError {
 
-    func visit(row: Row, lineNumber: UInt32, context: inout Context)
-    func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error]
-    func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation
-    
+    public private(set) var header: String
+    public private(set) var message: String
+
+    public init(header: String, message: String) {
+        self.header = header
+        self.message = message
+    }
+
 }
 
-extension RowVisitor {
-    
-    public func validate(row: Row, lineNumber: UInt32, context: inout Context) -> [Error] {
-        [Error]()
-    }
-    
-    public func onError(row: Row, lineNumber: UInt32, rowErrors: Errors, context: inout Context) -> ErrorContinuation {
-        ErrorContinuation.continuation
-    }
+public protocol RowVisitor: AnyObject {
+    associatedtype Row
+    typealias RowErrors = [RowError]
 
+    func visit(row: Row, lineNumber: UInt32, context: inout Context) throws
+    func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError]
+    func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws -> ErrorContinuation
 }
 
 open class ArrayRowVisitor: RowVisitor {
     
     public typealias Row = [String]
     
-    public func visit(row: Row, lineNumber: UInt32, context: inout Context) {
-        print("No Implemented!!!")
-        abort()
+    public func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+        notImplemented()
    }
-    
-}
 
+    public func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
+        [RowError]()
+    }
+
+    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws -> ErrorContinuation {
+        ErrorContinuation.continuation
+    }
+}
 
 open class DictionaryRowVisitor: RowVisitor {
     
     public typealias Row = [String: String]
     
-    public func visit(row: Row, lineNumber: UInt32, context: inout Context) {
-        print("No Implemented!!!")
-        abort()
-   }
-    
+    public func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+        notImplemented()
+    }
+
+    public func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
+        [RowError]()
+    }
+
+    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws -> ErrorContinuation {
+        ErrorContinuation.continuation
+    }
+}
+
+private func notImplemented() {
+    print("No Implemented!!!")
+    abort()
 }

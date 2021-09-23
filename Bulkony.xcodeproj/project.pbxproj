@@ -27,7 +27,6 @@
 		9990936F26E49041004EC237 /* Importer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9990936E26E49041004EC237 /* Importer.swift */; };
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
 		B7CAA1C98ECFE0500019B052 /* RowVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */; };
-		B7CAA3D704F9983AFE639D15 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA507E01E432B41E1A08B /* Error.swift */; };
 		B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CAB40A86661E762D99 /* Context.swift */; };
 		OBJ_24 /* Bulkony.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Bulkony.swift */; };
 		OBJ_25 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Exporter.swift */; };
@@ -60,7 +59,6 @@
 		99E56B8326C2A75900CEA53E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImporterTests.swift; sourceTree = "<group>"; };
 		B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExporterTests.swift; sourceTree = "<group>"; };
-		B7CAA507E01E432B41E1A08B /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		B7CAA9CAB40A86661E762D99 /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
 		B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RowVisitor.swift; sourceTree = "<group>"; };
 		"Bulkony::Bulkony::Product" /* Bulkony.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Bulkony.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,7 +96,6 @@
 				9990936E26E49041004EC237 /* Importer.swift */,
 				B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */,
 				B7CAA9CAB40A86661E762D99 /* Context.swift */,
-				B7CAA507E01E432B41E1A08B /* Error.swift */,
 			);
 			path = Import;
 			sourceTree = "<group>";
@@ -232,7 +229,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 9999;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1300;
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "Bulkony" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -289,7 +286,6 @@
 				9990936F26E49041004EC237 /* Importer.swift in Sources */,
 				B7CAA1C98ECFE0500019B052 /* RowVisitor.swift in Sources */,
 				B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */,
-				B7CAA3D704F9983AFE639D15 /* Error.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,7 +327,7 @@
 		OBJ_21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;
@@ -365,7 +361,7 @@
 		OBJ_22 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_TESTABILITY = YES;

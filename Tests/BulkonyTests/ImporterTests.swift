@@ -23,7 +23,13 @@ final class ImporterTests: XCTestCase {
         
         let rowVisitor = TextDictionaryRowVisitor()
         let importer = DictionaryCsvImporter(url, rowVisitor)
-        try importer.importData()
+        let result = try importer.importData()
+        switch result {
+        case .success(()):
+            XCTAssertTrue(true)
+        default:
+            XCTFail()
+        }
         let csvString = rowVisitor.data
         let expected = """
         1,alice,alice@example.com
@@ -44,7 +50,7 @@ fileprivate class TextDictionaryRowVisitor: DictionaryRowVisitor {
     
     private var columns = ["id", "name", "email"]
     
-    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) {
+    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
         let values: [String] = columns.map { column in
             row[column]!
         }
@@ -53,6 +59,5 @@ fileprivate class TextDictionaryRowVisitor: DictionaryRowVisitor {
         }
         data += values.joined(separator: ",")
     }
-    
-    
+
 }

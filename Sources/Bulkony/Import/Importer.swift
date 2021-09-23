@@ -8,12 +8,22 @@
 import Foundation
 import SwiftCSV
 
+public struct ImportError: Error {
+
+    public private(set) var errors: [[RowError]]
+
+    fileprivate init(errors: [[RowError]]) {
+        self.errors = errors
+    }
+
+}
+
 public protocol Importer {
-    func importData() throws
+    func importData() throws -> Result<(), ImportError>
 }
 
 public struct ArrayCsvImporter: Importer {
-    
+
     private var filePath: URL
     private var rowVisitor: ArrayRowVisitor
 
@@ -28,16 +38,14 @@ public struct ArrayCsvImporter: Importer {
 }
 
 extension ArrayCsvImporter {
-
-    public func importData() throws {
+    public func importData() throws -> Result<(), ImportError> {
         let rows: [[String]] = try CSV(url: filePath).enumeratedRows
-        processImport(rows: rows, rowVisitor: rowVisitor)
+        return try processImport(rows, rowVisitor)
     }
-
 }
 
 public struct DictionaryCsvImporter: Importer {
-    
+
     private var filePath: URL
     private var rowVisitor: DictionaryRowVisitor
 
@@ -53,29 +61,29 @@ public struct DictionaryCsvImporter: Importer {
 
 
 extension DictionaryCsvImporter {
-    
-    public func importData() throws {
+    public func importData() throws -> Result<(), ImportError> {
         let rows: [[String: String]] = try CSV(url: filePath).namedRows
-        processImport(rows: rows, rowVisitor: rowVisitor)
+        return try processImport(rows, rowVisitor)
     }
-
 }
 
-private func processImport<R, V: RowVisitor>(rows: [R], rowVisitor: V) {
-    
+private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throws -> Result<(), ImportError> {
     var context = Context()
+    var errorList = [[RowError]]()
     for (index, row) in rows.enumerated() {
         let lineNumber = UInt32(index + 1)
-
-        let errors = rowVisitor.validate(row: row as! V.Row, lineNumber: lineNumber, context: &context)
+        let errors = try rowVisitor.validate(row: row as! V.Row, lineNumber: lineNumber, context: &context)
         if !errors.isEmpty {
-            if rowVisitor.onError(row: row as! V.Row, lineNumber: lineNumber, rowErrors: errors, context: &context) == .abort {
-                return
+            errorList.append(errors)
+            if try rowVisitor.onError(row: row as! V.Row, lineNumber: lineNumber, errors: errors, context: &context) == .abort {
+                return .failure(ImportError(errors: errorList))
             }
             continue
         }
-
-        rowVisitor.visit(row: row as! V.Row, lineNumber: lineNumber, context: &context)
+        try rowVisitor.visit(row: row as! V.Row, lineNumber: lineNumber, context: &context)
     }
-    
+
+    return errorList.isEmpty
+            ? .success(())
+            : .failure(ImportError(errors: errorList))
 }
