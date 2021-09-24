@@ -10,17 +10,13 @@ import XCTest
 final class ImporterTests: XCTestCase {
 
     func testsCsvImporter() throws {
-        let tempDir = NSTemporaryDirectory()
-        let filename = NSUUID().uuidString + ".csv"
-        let url: URL = .init(fileURLWithPath: tempDir).appendingPathComponent(filename)
-        print("\(url)")
         let content = """
             id,name,email
             1,alice,alice@example.com
             2,bob,bob@example.com
             3,charlie,charlie@example.com
             """
-        FileManager.default.createFile(atPath: url.path, contents: content.data(using: .utf8))
+        let url = createCsv(content)
 
         let rowVisitor = TextDictionaryRowVisitor()
         let importer = DictionaryCsvImporter(url, rowVisitor)
@@ -43,17 +39,13 @@ final class ImporterTests: XCTestCase {
     }
 
     func testsValidateCsvImporter() throws {
-        let tempDir = NSTemporaryDirectory()
-        let filename = NSUUID().uuidString + ".csv"
-        let url: URL = .init(fileURLWithPath: tempDir).appendingPathComponent(filename)
-        print("\(url)")
         let content = """
             id,name,email
             1,alice,alice@example.com
             a,,bobexample.com
             3,charlie,charlie@example.com
             """
-        FileManager.default.createFile(atPath: url.path, contents: content.data(using: .utf8))
+        let url = createCsv(content)
         let rowVisitor = ValidateDictionaryRowVisitor()
         let importer = DictionaryCsvImporter(url, rowVisitor)
         let result = try importer.importData()
@@ -66,6 +58,15 @@ final class ImporterTests: XCTestCase {
             let rowError = errors.first!
             XCTAssertEqual(3, rowError.count)
         }
+    }
+
+    private func createCsv(_ content: String) -> URL {
+        let tempDir = NSTemporaryDirectory()
+        let filename = NSUUID().uuidString + ".csv"
+        let url: URL = .init(fileURLWithPath: tempDir).appendingPathComponent(filename)
+        print("\(url)")
+        FileManager.default.createFile(atPath: url.path, contents: content.data(using: .utf8))
+        return url
     }
 }
 
