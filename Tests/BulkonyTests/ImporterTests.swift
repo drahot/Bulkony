@@ -18,8 +18,8 @@ final class ImporterTests: XCTestCase {
             """
         let url = createCsv(content)
 
-        let rowVisitor = TextDictionaryRowVisitor()
-        let importer = DictionaryCsvImporter(url, rowVisitor)
+        let rowVisitor = TextArrayRowVisitor()
+        let importer = ArrayCsvImporter(url, rowVisitor)
         let result = try importer.importData()
         switch result {
         case .success(()):
@@ -38,7 +38,35 @@ final class ImporterTests: XCTestCase {
         try FileManager.default.removeItem(atPath: url.path)
     }
 
-    func testsValidateCsvImporter() throws {
+    func testsDictionaryCsvImporter() throws {
+        let content = """
+            id,name,email
+            1,alice,alice@example.com
+            2,bob,bob@example.com
+            3,charlie,charlie@example.com
+            """
+        let url = createCsv(content)
+
+        let rowVisitor = TextDictionaryRowVisitor()
+        let importer = DictionaryCsvImporter(url, rowVisitor)
+        let result = try importer.importData()
+        switch result {
+        case .success(()):
+            XCTAssertTrue(true)
+        default:
+            XCTFail()
+        }
+        let csvString = rowVisitor.data
+        let expected = """
+            1,alice,alice@example.com
+            2,bob,bob@example.com
+            3,charlie,charlie@example.com
+            """
+        XCTAssertEqual(expected, csvString)
+        try FileManager.default.removeItem(atPath: url.path)
+    }
+
+    func testsValidateDictionaryCsvImporter() throws {
         let content = """
             id,name,email
             1,alice,alice@example.com
@@ -46,6 +74,7 @@ final class ImporterTests: XCTestCase {
             3,charlie,charlie@example.com
             """
         let url = createCsv(content)
+
         let rowVisitor = ValidateDictionaryRowVisitor()
         let importer = DictionaryCsvImporter(url, rowVisitor)
         let result = try importer.importData()
@@ -64,6 +93,14 @@ final class ImporterTests: XCTestCase {
             XCTAssertEqual("email", rowError[2].header)
             XCTAssertEqual("メールアドレスが不正です。email: bobexample.com lineNumber: 2", rowError[2].message)
         }
+        let csvString = rowVisitor.data
+        let expected = """
+            1,alice,alice@example.com
+            3,charlie,charlie@example.com
+            """
+        XCTAssertEqual(expected, csvString)
+
+        try FileManager.default.removeItem(atPath: url.path)
     }
 
     private func createCsv(_ content: String) -> URL {
@@ -76,28 +113,31 @@ final class ImporterTests: XCTestCase {
     }
 }
 
+private class TextArrayRowVisitor: ArrayRowVisitor {
+
+    public private(set) var data: String = ""
+
+    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+        if !data.isEmpty {
+            data += "\n"
+        }
+        data += row.joined(separator: ",")
+    }
+}
+
 private class TextDictionaryRowVisitor: DictionaryRowVisitor {
 
     public private(set) var data: String = ""
 
-    private var columns = ["id", "name", "email"]
+    private let columns = ["id", "name", "email"]
 
     public override func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
-        let values: [String] = columns.map { column in
-            row[column]!
-        }
-        if !data.isEmpty {
-            data += "\n"
-        }
-        data += values.joined(separator: ",")
+        data = buildCsv(data, columns: columns, row: row)
     }
 
 }
 
-private class ValidateDictionaryRowVisitor: DictionaryRowVisitor {
-
-    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
-    }
+private class ValidateDictionaryRowVisitor: TextDictionaryRowVisitor {
 
     public override func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
         var errors = [RowError]()
@@ -141,7 +181,7 @@ private class ValidateDictionaryRowVisitor: DictionaryRowVisitor {
         errors: RowErrors,
         context: inout Context
     ) throws -> ErrorContinuation {
-        ErrorContinuation.abort
+        ErrorContinuation.continuation
     }
 
     private func validateEmail(_ email: String) -> Bool {
@@ -152,4 +192,11 @@ private class ValidateDictionaryRowVisitor: DictionaryRowVisitor {
         let regex = try! NSRegularExpression(pattern: pattern, options: .caseInsensitive)
         return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.count)) != nil
     }
+}
+
+private func buildCsv(_ data: String, columns: [String], row: [String: String]) -> String {
+    let values: [String] = columns.map { column in
+        row[column]!
+    }
+    return data + (!data.isEmpty ? "\n" : "") + values.joined(separator: ",")
 }
