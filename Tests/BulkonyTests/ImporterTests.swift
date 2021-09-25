@@ -57,6 +57,12 @@ final class ImporterTests: XCTestCase {
             XCTAssertEqual(1, errors.count)
             let rowError = errors.first!
             XCTAssertEqual(3, rowError.count)
+            XCTAssertEqual("id", rowError[0].header)
+            XCTAssertEqual("IDが数値ではありません。id: a lineNumber: 2", rowError[0].message)
+            XCTAssertEqual("name", rowError[1].header)
+            XCTAssertEqual("名前は必須です。name:  lineNumber: 2", rowError[1].message)
+            XCTAssertEqual("email", rowError[2].header)
+            XCTAssertEqual("メールアドレスが不正です。email: bobexample.com lineNumber: 2", rowError[2].message)
         }
     }
 
@@ -101,7 +107,7 @@ private class ValidateDictionaryRowVisitor: DictionaryRowVisitor {
             errors.append(
                 RowError(
                     header: "id",
-                    message: "IDが数値ではありません。。id: \(id) lineNumber: \(lineNumber)"
+                    message: "IDが数値ではありません。id: \(id) lineNumber: \(lineNumber)"
                 )
             )
         }
@@ -111,7 +117,7 @@ private class ValidateDictionaryRowVisitor: DictionaryRowVisitor {
             errors.append(
                 RowError(
                     header: "name",
-                    message: "名前は必須です。id: \(id) lineNumber: \(lineNumber)"
+                    message: "名前は必須です。name: \(name) lineNumber: \(lineNumber)"
                 )
             )
         }
