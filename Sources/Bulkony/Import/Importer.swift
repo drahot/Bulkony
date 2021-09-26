@@ -10,7 +10,7 @@ import SwiftCSV
 
 public struct ImportError: Error {
 
-    public private(set) var errors: [[RowError]]
+    public let errors: [[RowError]]
 
     fileprivate init(errors: [[RowError]]) {
         self.errors = errors
@@ -24,8 +24,8 @@ public protocol Importer {
 
 public struct ArrayCsvImporter: Importer {
 
-    private var filePath: URL
-    private var rowVisitor: ArrayRowVisitor
+    private let filePath: URL
+    private let rowVisitor: ArrayRowVisitor
 
     init(_ filePath: String, _ rowVisitor: ArrayRowVisitor) {
         self.init(.init(fileURLWithPath: filePath), rowVisitor)
@@ -46,8 +46,8 @@ extension ArrayCsvImporter {
 
 public struct DictionaryCsvImporter: Importer {
 
-    private var filePath: URL
-    private var rowVisitor: DictionaryRowVisitor
+    private let filePath: URL
+    private let rowVisitor: DictionaryRowVisitor
 
     init(_ filePath: String, _ rowVisitor: DictionaryRowVisitor) {
         self.init(.init(fileURLWithPath: filePath), rowVisitor)
@@ -69,6 +69,7 @@ extension DictionaryCsvImporter {
 private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throws -> Result<(), ImportError> {
     var context = Context()
     var errorList = [[RowError]]()
+
     for (index, row) in rows.enumerated() {
         let lineNumber = UInt32(index + 1)
         let errors = try rowVisitor.validate(row: row as! V.Row, lineNumber: lineNumber, context: &context)

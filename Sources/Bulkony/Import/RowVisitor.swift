@@ -11,8 +11,8 @@ public enum ErrorContinuation {
 
 public struct RowError {
 
-    public private(set) var header: String
-    public private(set) var message: String
+    public let header: String
+    public let message: String
 
     public init(header: String, message: String) {
         self.header = header
