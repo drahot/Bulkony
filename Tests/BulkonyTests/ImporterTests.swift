@@ -22,8 +22,9 @@ final class ImporterTests: XCTestCase {
         let importer = ArrayCsvImporter(url, rowVisitor)
         let result = try importer.importData()
         switch result {
-        case .success(()):
+        case .success(let count):
             XCTAssertTrue(true)
+            XCTAssertEqual(3, count)
         default:
             XCTFail()
         }
@@ -51,8 +52,9 @@ final class ImporterTests: XCTestCase {
         let importer = DictionaryCsvImporter(url, rowVisitor)
         let result = try importer.importData()
         switch result {
-        case .success(()):
+        case .success(let count):
             XCTAssertTrue(true)
+            XCTAssertEqual(3, count)
         default:
             XCTFail()
         }
@@ -79,7 +81,7 @@ final class ImporterTests: XCTestCase {
         let importer = DictionaryCsvImporter(url, rowVisitor)
         let result = try importer.importData()
         switch result {
-        case .success(()):
+        case .success(_):
             XCTFail()
         case .failure(let importError):
             let errors = importError.errors

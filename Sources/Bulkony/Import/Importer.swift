@@ -19,7 +19,7 @@ public struct ImportError: Error {
 }
 
 public protocol Importer {
-    func importData() throws -> Result<(), ImportError>
+    func importData() throws -> Result<UInt32, ImportError>
 }
 
 public struct ArrayCsvImporter: Importer {
@@ -38,7 +38,7 @@ public struct ArrayCsvImporter: Importer {
 }
 
 extension ArrayCsvImporter {
-    public func importData() throws -> Result<(), ImportError> {
+    public func importData() throws -> Result<UInt32, ImportError> {
         let rows: [[String]] = try CSV(url: filePath).enumeratedRows
         return try processImport(rows, rowVisitor)
     }
@@ -60,15 +60,16 @@ public struct DictionaryCsvImporter: Importer {
 }
 
 extension DictionaryCsvImporter {
-    public func importData() throws -> Result<(), ImportError> {
+    public func importData() throws -> Result<UInt32, ImportError> {
         let rows: [[String: String]] = try CSV(url: filePath).namedRows
         return try processImport(rows, rowVisitor)
     }
 }
 
-private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throws -> Result<(), ImportError> {
+private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throws -> Result<UInt32, ImportError> {
     var context = Context()
     var errorList = [[RowError]]()
+    var successCount: UInt32 = 0
 
     for (index, row) in rows.enumerated() {
         let lineNumber = UInt32(index + 1)
@@ -86,9 +87,10 @@ private func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throw
             continue
         }
         try rowVisitor.visit(row: row as! V.Row, lineNumber: lineNumber, context: &context)
+        successCount += 1
     }
 
     return errorList.isEmpty
-        ? .success(())
+        ? .success(successCount)
         : .failure(ImportError(errors: errorList))
 }
