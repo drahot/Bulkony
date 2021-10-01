@@ -25,24 +25,24 @@ public protocol RowVisitor: AnyObject {
     associatedtype Row
     typealias RowErrors = [RowError]
 
-    func visit(row: Row, lineNumber: UInt32, context: inout Context) throws
-    func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError]
-    func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws -> ErrorContinuation
+    func visit(row: Row, lineNumber: UInt64, context: inout Context) throws
+    func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError]
+    func onError(row: Row, lineNumber: UInt64, errors: RowErrors, context: inout Context) throws -> ErrorContinuation
 }
 
 open class ArrayRowVisitor: RowVisitor {
 
     public typealias Row = [String]
 
-    public func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+    public func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
         notImplemented()
     }
 
-    public func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
+    public func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError] {
         [RowError]()
     }
 
-    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws
+    public func onError(row: Row, lineNumber: UInt64, errors: RowErrors, context: inout Context) throws
         -> ErrorContinuation
     {
         ErrorContinuation.continuation
@@ -53,15 +53,15 @@ open class DictionaryRowVisitor: RowVisitor {
 
     public typealias Row = [String: String]
 
-    public func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+    public func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
         notImplemented()
     }
 
-    public func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
+    public func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError] {
         [RowError]()
     }
 
-    public func onError(row: Row, lineNumber: UInt32, errors: RowErrors, context: inout Context) throws
+    public func onError(row: Row, lineNumber: UInt64, errors: RowErrors, context: inout Context) throws
         -> ErrorContinuation
     {
         ErrorContinuation.continuation

@@ -119,7 +119,7 @@ private class TextArrayRowVisitor: ArrayRowVisitor {
 
     public private(set) var data: String = ""
 
-    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+    public override func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
         if !data.isEmpty {
             data += "\n"
         }
@@ -133,7 +133,7 @@ private class TextDictionaryRowVisitor: DictionaryRowVisitor {
 
     private let columns = ["id", "name", "email"]
 
-    public override func visit(row: Row, lineNumber: UInt32, context: inout Context) throws {
+    public override func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
         data = buildCsv(data, columns: columns, row: row)
     }
 
@@ -141,7 +141,7 @@ private class TextDictionaryRowVisitor: DictionaryRowVisitor {
 
 private class ValidateDictionaryRowVisitor: TextDictionaryRowVisitor {
 
-    public override func validate(row: Row, lineNumber: UInt32, context: inout Context) throws -> [RowError] {
+    public override func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError] {
         var errors = [RowError]()
 
         let id = row["id"]!
@@ -179,7 +179,7 @@ private class ValidateDictionaryRowVisitor: TextDictionaryRowVisitor {
 
     public override func onError(
         row: Row,
-        lineNumber: UInt32,
+        lineNumber: UInt64,
         errors: RowErrors,
         context: inout Context
     ) throws -> ErrorContinuation {
