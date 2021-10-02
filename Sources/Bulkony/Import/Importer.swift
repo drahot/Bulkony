@@ -26,20 +26,22 @@ public struct ArrayCsvImporter: Importer {
 
     private let filePath: URL
     private let rowVisitor: ArrayRowVisitor
+    private let encoding: String.Encoding
 
-    init(_ filePath: String, _ rowVisitor: ArrayRowVisitor) {
-        self.init(.init(fileURLWithPath: filePath), rowVisitor)
+    init(_ filePath: String, _ rowVisitor: ArrayRowVisitor, encoding: String.Encoding = .utf8) {
+        self.init(.init(fileURLWithPath: filePath), rowVisitor, encoding: encoding)
     }
 
-    init(_ filePath: URL, _ rowVisitor: ArrayRowVisitor) {
+    init(_ filePath: URL, _ rowVisitor: ArrayRowVisitor, encoding: String.Encoding = .utf8) {
         self.filePath = filePath
         self.rowVisitor = rowVisitor
+        self.encoding = encoding
     }
 }
 
 extension ArrayCsvImporter {
     public func importData() throws -> Result<UInt64, ImportError> {
-        let rows: [[String]] = try CSV(url: filePath).enumeratedRows
+        let rows: [[String]] = try CSV(url: filePath, encoding: encoding).enumeratedRows
         return try processImport(rows, rowVisitor)
     }
 }
@@ -48,20 +50,22 @@ public struct DictionaryCsvImporter: Importer {
 
     private let filePath: URL
     private let rowVisitor: DictionaryRowVisitor
+    private let encoding: String.Encoding
 
-    init(_ filePath: String, _ rowVisitor: DictionaryRowVisitor) {
-        self.init(.init(fileURLWithPath: filePath), rowVisitor)
+    init(_ filePath: String, _ rowVisitor: DictionaryRowVisitor, encoding: String.Encoding = .utf8) {
+        self.init(.init(fileURLWithPath: filePath), rowVisitor, encoding: encoding)
     }
 
-    init(_ filePath: URL, _ rowVisitor: DictionaryRowVisitor) {
+    init(_ filePath: URL, _ rowVisitor: DictionaryRowVisitor, encoding: String.Encoding = .utf8) {
         self.filePath = filePath
         self.rowVisitor = rowVisitor
+        self.encoding = encoding
     }
 }
 
 extension DictionaryCsvImporter {
     public func importData() throws -> Result<UInt64, ImportError> {
-        let rows: [[String: String]] = try CSV(url: filePath).namedRows
+        let rows: [[String: String]] = try CSV(url: filePath, encoding: encoding).namedRows
         return try processImport(rows, rowVisitor)
     }
 }
