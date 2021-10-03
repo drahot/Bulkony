@@ -29,11 +29,9 @@
 		B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */; };
 		B7CAA1C98ECFE0500019B052 /* RowVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CC93184E2E6D2D693F /* RowVisitor.swift */; };
 		B7CAAD99F9668D5F38D6681B /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CAA9CAB40A86661E762D99 /* Context.swift */; };
-		OBJ_24 /* Bulkony.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* Bulkony.swift */; };
 		OBJ_25 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* Exporter.swift */; };
 		OBJ_26 /* RowGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* RowGenerator.swift */; };
 		OBJ_33 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
-		OBJ_44 /* BulkonyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* BulkonyTests.swift */; };
 		OBJ_46 /* Bulkony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Bulkony::Bulkony::Product" /* Bulkony.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,9 +66,7 @@
 		"Bulkony::BulkonyTests::Product" /* BulkonyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = BulkonyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* Exporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
 		OBJ_12 /* RowGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowGenerator.swift; sourceTree = "<group>"; };
-		OBJ_15 /* BulkonyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkonyTests.swift; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* Bulkony.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bulkony.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,7 +119,6 @@
 		OBJ_14 /* BulkonyTests */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_15 /* BulkonyTests.swift */,
 				B7CAA4A6303868EAE75ED70D /* ExporterTests.swift */,
 				9979B94F26FA14AA0088A705 /* XCTestHelper.swift */,
 				B7CAA0AF2753CA3712B23C39 /* ImporterTests.swift */,
@@ -166,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				9990936D26E49015004EC237 /* Import */,
-				OBJ_9 /* Bulkony.swift */,
 				OBJ_10 /* Export */,
 			);
 			name = Bulkony;
@@ -285,7 +279,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_24 /* Bulkony.swift in Sources */,
 				OBJ_25 /* Exporter.swift in Sources */,
 				OBJ_26 /* RowGenerator.swift in Sources */,
 				9990936F26E49041004EC237 /* Importer.swift in Sources */,
@@ -308,7 +301,6 @@
 			files = (
 				9979B95026FA14AA0088A705 /* XCTestHelper.swift in Sources */,
 				99525E7326F8462E00C69F40 /* ImporterTests.swift in Sources */,
-				OBJ_44 /* BulkonyTests.swift in Sources */,
 				99744F292701E6E200CC792E /* ContextTests.swift in Sources */,
 				B7CAA1C03E7ACFCEEA68FD96 /* ExporterTests.swift in Sources */,
 			);
