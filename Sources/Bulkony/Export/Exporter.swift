@@ -200,7 +200,7 @@ private func _normalizeCsv(_ any: Any, _ separator: Character) -> String {
         switch c {
         case "\"":
             return (String(c) + "\"", true)
-        case separator, "\r\n", "\n":
+        case separator, "\r\n", "\r", "\n":
             return (String(c), true)
         default:
             return (String(c), false)
