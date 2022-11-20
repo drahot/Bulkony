@@ -24,14 +24,14 @@ public protocol Importer {
 
 public struct ArrayCsvImporter: Importer {
     private let filePath: URL
-    private let rowVisitor: ArrayRowVisitor
+    private let rowVisitor: any ArrayRowVisitor
     private let encoding: String.Encoding
-    private let delimiter: Character
+    private let delimiter: CSVDelimiter
 
     public init(
         _ filePath: String,
-        _ rowVisitor: ArrayRowVisitor,
-        delimiter: Character = CSV.comma,
+        _ rowVisitor: any ArrayRowVisitor,
+        delimiter: CSVDelimiter = .comma,
         encoding: String.Encoding = .utf8
     ) {
         self.init(.init(fileURLWithPath: filePath), rowVisitor, delimiter: delimiter, encoding: encoding)
@@ -39,8 +39,8 @@ public struct ArrayCsvImporter: Importer {
 
     public init(
         _ filePath: URL,
-        _ rowVisitor: ArrayRowVisitor,
-        delimiter: Character = CSV.comma,
+        _ rowVisitor: any ArrayRowVisitor,
+        delimiter: CSVDelimiter = .comma,
         encoding: String.Encoding = .utf8
     ) {
         self.filePath = filePath
@@ -52,21 +52,21 @@ public struct ArrayCsvImporter: Importer {
 
 extension ArrayCsvImporter {
     public func importData() throws -> Result<UInt64, ImportError> {
-        let rows: [[String]] = try CSV(url: filePath, delimiter: delimiter, encoding: encoding).enumeratedRows
+        let rows: [[String]] = try CSV<Enumerated>(url: filePath, delimiter: delimiter, encoding: encoding).rows
         return try processImport(rows, rowVisitor)
     }
 }
 
 public struct DictionaryCsvImporter: Importer {
     private let filePath: URL
-    private let rowVisitor: DictionaryRowVisitor
+    private let rowVisitor: any DictionaryRowVisitor
     private let encoding: String.Encoding
-    private let delimiter: Character
+    private let delimiter: CSVDelimiter
 
     public init(
         _ filePath: String,
-        _ rowVisitor: DictionaryRowVisitor,
-        delimiter: Character = CSV.comma,
+        _ rowVisitor: any DictionaryRowVisitor,
+        delimiter: CSVDelimiter = .comma,
         encoding: String.Encoding = .utf8
     ) {
         self.init(.init(fileURLWithPath: filePath), rowVisitor, delimiter: delimiter, encoding: encoding)
@@ -74,8 +74,8 @@ public struct DictionaryCsvImporter: Importer {
 
     public init(
         _ filePath: URL,
-        _ rowVisitor: DictionaryRowVisitor,
-        delimiter: Character = CSV.comma,
+        _ rowVisitor: any DictionaryRowVisitor,
+        delimiter: CSVDelimiter = .comma,
         encoding: String.Encoding = .utf8
     ) {
         self.filePath = filePath
@@ -87,7 +87,7 @@ public struct DictionaryCsvImporter: Importer {
 
 extension DictionaryCsvImporter {
     public func importData() throws -> Result<UInt64, ImportError> {
-        let rows: [[String: String]] = try CSV(url: filePath, delimiter: delimiter, encoding: encoding).namedRows
+        let rows: [[String: String]] = try CSV<Named>(url: filePath, delimiter: delimiter, encoding: encoding).rows
         return try processImport(rows, rowVisitor)
     }
 }

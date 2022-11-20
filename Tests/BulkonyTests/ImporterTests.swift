@@ -116,14 +116,20 @@ final class ImporterTests: XCTestCase {
 }
 
 private class TextArrayRowVisitor: ArrayRowVisitor {
-
     public private(set) var data: String = ""
 
-    public override func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
+    func visit(row: [String], lineNumber: UInt64, context: inout Context) throws {
         if !data.isEmpty {
             data += "\n"
         }
         data += row.joined(separator: ",")
+    }
+
+    func validate(row: [String], lineNumber: UInt64, context: inout Context) throws -> [RowError] {
+        [RowError]()
+    }
+    func onError(row: [String], lineNumber: UInt64, errors: RowErrors, context: inout Context) throws -> ErrorContinuation {
+        .continuation
     }
 }
 
@@ -133,15 +139,21 @@ private class TextDictionaryRowVisitor: DictionaryRowVisitor {
 
     private let columns = ["id", "name", "email"]
 
-    public override func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
+    func visit(row: [String: String], lineNumber: UInt64, context: inout Context) throws {
         data = buildCsv(data, columns: columns, row: row)
     }
 
+    func validate(row: [String: String], lineNumber: UInt64, context: inout Context) throws -> [RowError] {
+        [RowError]()
+    }
+    func onError(row: [String: String], lineNumber: UInt64, errors: RowErrors, context: inout Context) throws -> ErrorContinuation {
+        .continuation
+    }
 }
 
 private class ValidateDictionaryRowVisitor: TextDictionaryRowVisitor {
 
-    public override func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError] {
+    override func validate(row: [String: String], lineNumber: UInt64, context: inout Context) throws -> [RowError] {
         var errors = [RowError]()
 
         let id = row["id"]!
@@ -177,13 +189,13 @@ private class ValidateDictionaryRowVisitor: TextDictionaryRowVisitor {
         return errors
     }
 
-    public override func onError(
-        row: Row,
+    override func onError(
+        row: [String: String],
         lineNumber: UInt64,
         errors: RowErrors,
         context: inout Context
     ) throws -> ErrorContinuation {
-        ErrorContinuation.continuation
+        .continuation
     }
 
     private func validateEmail(_ email: String) -> Bool {

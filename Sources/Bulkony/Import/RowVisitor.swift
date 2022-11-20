@@ -21,7 +21,7 @@ public struct RowError {
 
 }
 
-public protocol RowVisitor: AnyObject {
+public protocol RowVisitor {
     associatedtype Row
     typealias RowErrors = [RowError]
 
@@ -30,45 +30,8 @@ public protocol RowVisitor: AnyObject {
     func onError(row: Row, lineNumber: UInt64, errors: RowErrors, context: inout Context) throws -> ErrorContinuation
 }
 
-open class ArrayRowVisitor: RowVisitor {
-
-    public typealias Row = [String]
-
-    public func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
-        notImplemented()
-    }
-
-    public func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError] {
-        [RowError]()
-    }
-
-    public func onError(row: Row, lineNumber: UInt64, errors: RowErrors, context: inout Context) throws
-        -> ErrorContinuation
-    {
-        ErrorContinuation.continuation
-    }
+public protocol ArrayRowVisitor: RowVisitor where Row == [String] {
 }
 
-open class DictionaryRowVisitor: RowVisitor {
-
-    public typealias Row = [String: String]
-
-    public func visit(row: Row, lineNumber: UInt64, context: inout Context) throws {
-        notImplemented()
-    }
-
-    public func validate(row: Row, lineNumber: UInt64, context: inout Context) throws -> [RowError] {
-        [RowError]()
-    }
-
-    public func onError(row: Row, lineNumber: UInt64, errors: RowErrors, context: inout Context) throws
-        -> ErrorContinuation
-    {
-        ErrorContinuation.continuation
-    }
-}
-
-private func notImplemented() {
-    print("No Implemented!!!")
-    abort()
+public protocol DictionaryRowVisitor: RowVisitor where Row == [String: String] {
 }
