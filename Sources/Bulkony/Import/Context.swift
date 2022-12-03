@@ -19,7 +19,7 @@ public struct Context: Collection {
 
     private var storage: [Any]
 
-    init() {
+    public init() {
         storage = []
     }
 
