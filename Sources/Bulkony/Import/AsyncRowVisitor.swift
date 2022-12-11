@@ -4,6 +4,7 @@
 
 import Foundation
 
+@available(macOS 12, *)
 public protocol AsyncRowVisitor {
     associatedtype Row
     typealias RowErrors = [RowError]
@@ -18,8 +19,10 @@ public protocol AsyncRowVisitor {
     ) async throws -> ErrorContinuation
 }
 
+@available(macOS 12, *)
 public protocol AsyncArrayRowVisitor: AsyncRowVisitor where Row == [String] {
 }
 
+@available(macOS 12, *)
 public protocol AsyncDictionaryRowVisitor: AsyncRowVisitor where Row == [String: String] {
 }

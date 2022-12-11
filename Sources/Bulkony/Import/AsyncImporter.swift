@@ -5,10 +5,12 @@
 import Foundation
 import SwiftCSV
 
+@available(macOS 12, *)
 public protocol AsyncImporter {
     func importData() async throws -> Result<UInt64, ImportError>
 }
 
+@available(macOS 12, *)
 public struct AsyncArrayCsvImporter: AsyncImporter {
     private let filePath: URL
     private let rowVisitor: any AsyncArrayRowVisitor
@@ -37,6 +39,7 @@ public struct AsyncArrayCsvImporter: AsyncImporter {
     }
 }
 
+@available(macOS 12, *)
 extension AsyncArrayCsvImporter {
     public func importData() async throws -> Result<UInt64, ImportError> {
         let rows: [[String]] = try CSV<Enumerated>(url: filePath, delimiter: delimiter, encoding: encoding).rows
@@ -44,6 +47,7 @@ extension AsyncArrayCsvImporter {
     }
 }
 
+@available(macOS 12, *)
 public struct AsyncDictionaryCsvImporter: AsyncImporter {
     private let filePath: URL
     private let rowVisitor: any AsyncDictionaryRowVisitor
@@ -72,6 +76,7 @@ public struct AsyncDictionaryCsvImporter: AsyncImporter {
     }
 }
 
+@available(macOS 12, *)
 extension AsyncDictionaryCsvImporter {
     public func importData() async throws -> Result<UInt64, ImportError> {
         let rows: [[String: String]] = try CSV<Named>(url: filePath, delimiter: delimiter, encoding: encoding).rows
@@ -79,6 +84,7 @@ extension AsyncDictionaryCsvImporter {
     }
 }
 
+@available(macOS 12, *)
 private func processImport<R, V: AsyncRowVisitor>(
     _ rows: [R], _ rowVisitor: V
 ) async throws -> Result<UInt64, ImportError> {
