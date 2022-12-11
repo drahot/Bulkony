@@ -82,7 +82,9 @@ extension DictionaryCsvImporter {
     }
 }
 
-fileprivate func processImport<R, V: RowVisitor>(_ rows: [R], _ rowVisitor: V) throws -> Result<UInt64, ImportError> {
+private func processImport<R, V: RowVisitor>(
+    _ rows: [R], _ rowVisitor: V
+) throws -> Result<UInt64, ImportError> {
     var context = Context()
     var errorList = [[RowError]]()
     var successCount: UInt64 = 0

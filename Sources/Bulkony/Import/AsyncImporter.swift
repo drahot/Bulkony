@@ -5,7 +5,7 @@
 import Foundation
 import SwiftCSV
 
-public protocol AsyncImporter  {
+public protocol AsyncImporter {
     func importData() async throws -> Result<UInt64, ImportError>
 }
 
@@ -79,7 +79,9 @@ extension AsyncDictionaryCsvImporter {
     }
 }
 
-fileprivate func processImport<R, V: AsyncRowVisitor>(_ rows: [R], _ rowVisitor: V) async throws -> Result<UInt64, ImportError> {
+private func processImport<R, V: AsyncRowVisitor>(
+    _ rows: [R], _ rowVisitor: V
+) async throws -> Result<UInt64, ImportError> {
     var context = Context()
     var errorList = [[RowError]]()
     var successCount: UInt64 = 0
