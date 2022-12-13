@@ -12,7 +12,7 @@ public protocol RowGenerator {
 public struct ArrayRowGenerator: RowGenerator {
     private var headers: [String]
     private var rows: AnySequence<[Any]>
-    init(headers: [String], rows: AnySequence<[Any]>) {
+    public init(headers: [String], rows: AnySequence<[Any]>) {
         self.headers = headers
         self.rows = rows
     }

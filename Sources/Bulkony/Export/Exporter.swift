@@ -17,11 +17,11 @@ public struct CsvExporter: Exporter {
     private var filePath: URL
     private var rowGenerator: RowGenerator
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator) {
+    public init(_ filePath: String, _ rowGenerator: RowGenerator) {
         self.init(.init(fileURLWithPath: filePath), rowGenerator)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
+    public init(_ filePath: URL, _ rowGenerator: RowGenerator) {
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
@@ -43,11 +43,11 @@ public struct TsvExporter: Exporter {
     private var filePath: URL
     private var rowGenerator: RowGenerator
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator) {
+    public init(_ filePath: String, _ rowGenerator: RowGenerator) {
         self.init(.init(fileURLWithPath: filePath), rowGenerator)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
+    public init(_ filePath: URL, _ rowGenerator: RowGenerator) {
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
@@ -69,14 +69,14 @@ public struct XmlExporter: Exporter {
     private var rootName: String
     private var rowName: String
 
-    init(
+    public init(
         _ filePath: String, _ rowGenerator: RowGenerator, _ rootName: String = "root",
         _ rowName: String = "row"
     ) {
         self.init(.init(fileURLWithPath: filePath), rowGenerator, rootName, rowName)
     }
 
-    init(
+    public init(
         _ filePath: URL, _ rowGenerator: RowGenerator, _ rootName: String = "root",
         _ rowName: String = "row"
     ) {
@@ -120,11 +120,11 @@ public struct JsonExporter: Exporter {
     private var filePath: URL
     private var rowGenerator: RowGenerator
 
-    init(_ filePath: String, _ rowGenerator: RowGenerator) {
+    public init(_ filePath: String, _ rowGenerator: RowGenerator) {
         self.init(.init(fileURLWithPath: filePath), rowGenerator)
     }
 
-    init(_ filePath: URL, _ rowGenerator: RowGenerator) {
+    public init(_ filePath: URL, _ rowGenerator: RowGenerator) {
         self.filePath = filePath
         self.rowGenerator = rowGenerator
     }
