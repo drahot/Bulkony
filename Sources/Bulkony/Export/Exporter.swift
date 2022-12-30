@@ -4,6 +4,10 @@
 
 import Foundation
 
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
+
 public protocol Exporter {
 
     func export() throws
